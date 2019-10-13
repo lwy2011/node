@@ -11,7 +11,7 @@ fs.open(
             console.log(err || "succeed")
         });
 
-        //关闭
+        //关闭，为什么没放在写入成功之后呢？很奇怪啊！
         fs.close(fd,(err)=>{
             console.log(err || "closed");
             //读取验证
