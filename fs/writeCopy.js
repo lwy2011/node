@@ -27,7 +27,7 @@ const copy = (src,dest,callback)=>{
     fs.readFile(src,(err,data)=>{
         err ?
             console.log(err,"读取失败"):
-            fs.writeFile(dest,data,(err)=>{
+            fs.writeFile(dest,data,(err)=>{     //这个回调的参数只有一个err，多了自动省略
                 console.log(err || "写入成功");
 
                 !err && callback && callback(err,data)
