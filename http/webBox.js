@@ -27,14 +27,16 @@ http.createServer((req,res)=>{
             //这里其实可以设置响应头的,更加保险
             const arr = pathname.split('.')
             const suf = arr[arr.length - 1]
-            res.writeHead(200,{
-                'content-type':`text/${suf};charset=utf-8`
+            res.writeHead(data?200:404,{
+                'content-type':`text/${suf};charset=utf-8`  //有个缺点，就是图片的应该为image/png
+                //image/jpg等等
             });
-            res.end(data || '404');
+            res.end(data ||  '<h1>404页面不存在！</h1>');
             console.log(data);
         })
     }
     //但是局限性在于，仅仅是静态文件的获取了。很死板，而且可扩展性太差了，还有个错误
+
 
 }).listen(3000,'localhost');
 
