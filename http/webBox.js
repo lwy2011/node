@@ -23,12 +23,18 @@ http.createServer((req,res)=>{
     }else {
         //读取数据，发送数据
         fs.readFile(path.join(__dirname,`../webBoxSource/${pathname}`),(err,data)=>{
-            if (err ) throw err;
-            res.end(data);
+            if (err ) res.writeHead(404);
+            //这里其实可以设置响应头的,更加保险
+            const arr = pathname.split('.')
+            const suf = arr[arr.length - 1]
+            res.writeHead(200,{
+                'content-type':`text/${suf};charset=utf-8`
+            });
+            res.end(data || '404');
             console.log(data);
         })
     }
-    //但是局限性在于，仅仅是静态文件的获取了。很死板，而且可扩展性太差了
+    //但是局限性在于，仅仅是静态文件的获取了。很死板，而且可扩展性太差了，还有个错误
 
 }).listen(3000,'localhost');
 
