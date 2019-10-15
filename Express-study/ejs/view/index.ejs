@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ejs初体验</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <div class="box">
+        <p class="title">
+            <%=title %>
+        </p>
+        <table>
+            <tr class="nav">
+                <td>排名</td>
+                <td>标题</td>
+                <td>参与人数</td>
+                <td></td>
+            </tr>
+            <% for (let i = 0;i<lists.length;i++){ %>
+                <tr>
+                    <td class="<%= i < 6 ? 'hot' : 'notHot' %>"><%= i+1 %></td>
+                    <td><%= lists[i].title %></td>
+                    <td><%= lists[i].number %></td>
+                    <td style="background : <%= color[lists[i].state] %>"><%= lists[i].state %></td>
+                </tr>
+            <% } %>
+        </table>
+        <div class="footer"><%= "数据源于：" + source %></div>
+    </div>
+    <script src="./js/index.js"></script>
+</body>
+</html>
