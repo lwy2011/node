@@ -1,0 +1,22 @@
+.title {
+    font-size: 20px;
+    color: brown;
+}
+.box{
+    margin :2em ;
+    border:1px solid;
+    padding:1em;
+    background: beige;
+}
+
+td {
+    padding :.5em 1em;  /*margin失效*/
+}
+
+.hot {
+    color:indianred;
+}
+
+.notHot{
+    color:darkgray;
+}
