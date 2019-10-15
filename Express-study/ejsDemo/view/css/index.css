@@ -1,7 +1,8 @@
 .title {
-    margin : 1em auto;
-    text-align: center;
     font-size: 1.5em;
     color: cornflowerblue;
     font-weight: 600;
+}
+.card {
+    padding: 1em;
 }
