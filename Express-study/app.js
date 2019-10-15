@@ -40,6 +40,11 @@ const logWrite = (req, result) => {
     });
 };
 
+//请求静态资源的方法：
+app.use(
+    express.static(path.join(__dirname, "public"))
+);   //这里匹配到了，下面的就自动不匹配了！
+
 app.get("/", (req, res, next) => {
     res.writeHead(200, {"Content-Type": "text/html;charset=utf-8"});
     res.write("<p>第一个中间键！</p>");
@@ -51,7 +56,7 @@ app.get("/", (req, res) => {
     logWrite(req, 200);
 });
 
-app.use((req, res, next) => {
+app.use((req, res) => {
     console.log("404");
     res.writeHead(404, {"Content-Type": "text/html;charset=utf-8"});
     res.end("<h1>404 页面不存在！</h1>");
