@@ -1,39 +1,24 @@
 <% include header.ejs %>
-    <p class="title mt-5 mb-3 text-center">Express + Ejs 留言板 demo!</p>
-    <div class="text-center denger mb-3">
-        <a href="/new" class="btn btn-sm btn-danger ">我要留言</a>
+<p class="title mt-5 mb-3 text-center">Express + Ejs 留言板 demo!</p>
+<div class="text-center denger mb-3">
+    <a href="/new" class="btn btn-sm btn-danger ">我要留言</a>
+</div>
+<div class="container mt-3 mb-3">
+    <div class="row">
+        <% if(entries.length === 0){ %>
+            <a href="/new">暂无留言，请添加留言！</a>
+        <% }else { %>
+            <% entries.map(function (list){ %>
+                <div class="card mt-3 mb-3" style="width: 100%;border:1px solid #888">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= list.title %></h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><%= list.content %></h6>
+                        <p class="card-text"><%= list.published %></p>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
     </div>
-    <div class="container mt-3 mb-3">
-        <div class="row">
-            <div class="card mt-3 mb-3" style="width: 100%;border:1px solid #888">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                </div>
-            </div>
-            <div class="card mt-3 mb-3" style="width: 100%;border:1px solid #888">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                </div>
-            </div>
-            <div class="card mt-3 mb-3" style="width: 100%;border:1px solid #888">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                </div>
-            </div>
-            <div class="card mt-3 mb-3" style="width: 100%;border:1px solid #888">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 <% include footer.ejs %>
 <!--  Ejs原来可以当成模块来引入。学到了！-->
