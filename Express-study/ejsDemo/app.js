@@ -15,7 +15,17 @@ app.use(express.static(path.join(__dirname, "view")));
 
 
 app.get("/", (req, res) => {
-    res.render('index');
+    res.render("index");
+});
+app.get("/new", (req, res) => {
+    res.render("new");
+});
+app.post("/new", (req, res) => {
+
+});
+
+app.use((req, res) => {
+    res.status(404).render("404");
 });
 
 app.listen(3000);
