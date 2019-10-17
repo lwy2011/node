@@ -88,3 +88,18 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+// import socket.io
+
+const socketIO = require('socket.io')
+
+// 生成实例
+const IO = socketIO(server)
+
+//建立连接
+
+IO.on('connection',socket=>{
+    console.log("conneted");
+    socket.emit('msg',"建立连接啦！")
+})

@@ -10,7 +10,7 @@ router.get("/", (req, res) => {    //跳转失败的原因找到了，就是这�
 
 router.post("/", (req, res) => {
     // const {name,password} = req.body
-    const test = dataBase.test(req.body)
+    const test = dataBase.test(req.body);
         if(test === "用户名不存在！" ) return res.render("error", {message: test});
         test? res.redirect("/") : res.render("error", {message: "用户名或密码有误！"});
 });
