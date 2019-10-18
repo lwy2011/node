@@ -1,4 +1,70 @@
 <% include header.ejs %>
 
+<header class="text-center text-danger" style="font-size:2em;font-weight: 600;">chat</header>
+<main class="container">
+    <ul class="lists" style="height:45vh;overflow: scroll;">
+    </ul>
+</main>
+<footer>
+    <div class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="input"></label>
+            <input type="text" class="form-control"
+                   id="input" placeholder="请输入内容" name="msg" required>
+        </div>
+        <button class="btn btn-primary mb-2">提交</button>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="/socket.io/socket.io.js"></script>
+<!--引入sockect文件，会在node_modules下找-->
+<script>
+    console.log(555);
+    var socket = io.connect("http://localhost:3000/");   //引入
+    console.log("io");
+    socket.on("connect", data => {    //监听连接
+        console.log(data, 23232);
+        socket.emit("open");   //打开通道
+    });
+    socket.on("msg", data => {
+        listDom("server", data);  //渲染dom
+        console.log(data, "msg");
+    });
+    //信息处理
+    const listDom = (type, data) => {
+        const node = `
+            <li class=${type}>
+                <span>${type} : </span>
+                <span>${data}</span>
+                <p>${new Date()}</p>
+            </li>
+        `;
+        $(".lists").append(node);
+        //滚动条在加入内容后，始终在最底部
 
-<% include footer.ejs %>
+        $('.lists')[0].scrollTop= $('.lists')[0].scrollHeight  //scrollHeight是元素可以偏离的高度。
+    };
+    $(".lists > li").css({
+        margin: "1em",
+        border: "1px solid #888"
+    });
+    // $(".server").css({"float": "left"});
+    $(".btn").on("click", e => {
+        const val = $("#input")[0].value;
+        // console.log(val, $("#input"));
+        socket.emit("msg", val);
+        listDom("我", val);
+        $("#input")[0].value = "";
+    });
+
+</script>
+</body>
+</html>
