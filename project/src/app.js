@@ -2,6 +2,7 @@ import express from "express";
 import configs from "../config";
 import nunjucks from "nunjucks";
 import router from "../router/index";
+import url from "url";
 
 const app = express();
 
@@ -20,6 +21,16 @@ nunjucks.configure(configs.viewPath, {
 //配置router
 
 app.use(router);
+
+
+//404放最后的路由
+
+app.use((req, res) => {
+    const urlObj = url.parse(req.url);
+    const helper = req.url.indexOf("web") >= 0 ? "web" : "back";
+    console.log(urlObj, req.url);
+    res.render("404.html", {helper});
+});
 
 app.listen(3000, () => {
     console.log("listening");

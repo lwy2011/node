@@ -3,7 +3,7 @@ import express from "express";
 const router = express.Router();
 //后端路由
 
-router.get("/admin", (req, res) => {
+router.get("/back", (req, res) => {
     res.render("back/index.html");
 });
 
