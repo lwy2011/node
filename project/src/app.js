@@ -1,6 +1,7 @@
 import express from "express";
 import configs from "../config";
 import nunjucks from "nunjucks";
+import router from "../router/index";
 
 const app = express();
 
@@ -12,13 +13,15 @@ app.use(express.static(configs.publicPath));
 nunjucks.configure(configs.viewPath, {
     autoescape: true,
     express: app,
-    noCache:true     //开发阶段模板不用缓存的设置，记得上线时去掉
+    noCache: true     //开发阶段模板不用缓存的设置，记得上线时去掉
 });
+
+
+//配置router
+
+app.use(router);
 
 app.listen(3000, () => {
     console.log("listening");
 });
 
-app.get("/", (req, res) => {
-    res.end(`<h1>test</h1>`);
-});
