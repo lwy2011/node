@@ -4,6 +4,8 @@ import nunjucks from "nunjucks";
 import router from "../router/index";
 import url from "url";
 
+import rollRouter from "../router/roll";
+
 const app = express();
 
 //静态文件的路由设置
@@ -22,6 +24,9 @@ nunjucks.configure(configs.viewPath, {
 
 app.use(router);
 
+//轮播图路由
+
+app.use(rollRouter);
 
 //404放最后的路由
 
