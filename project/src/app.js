@@ -4,8 +4,15 @@ import nunjucks from "nunjucks";
 import router from "../router/index";
 
 import rollRouter from "../router/roll";
+import bodyParser from "../middle_wares/body_parser";
+
 
 const app = express();
+
+//添加bodyParser中间键，为了区分get,post,请求，并把post请求的数据放到req.body的上面
+
+app.use(bodyParser);
+
 
 //静态文件的路由设置
 app.use(express.static(configs.publicPath));
