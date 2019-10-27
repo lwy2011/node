@@ -25,7 +25,19 @@ const imgSchema = mongoose.Schema({
 const imgModel = db.model("rollImg", imgSchema);
 
 
+const creatImg = data => imgModel.create(
+    {
+        img_title: data.title,
+        img_url: data.url,
+        img_link: data.link,
+        createdAt: new Date(),
+        l_edit: new Date(),
+        end_time:data.end_time || ''
+    }
+);
+
 export default imgModel;
+export {creatImg}
 
 
 

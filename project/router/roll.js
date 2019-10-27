@@ -11,7 +11,10 @@ router.get("/imgs", (req, res) => {
 });
 
 
-router.post("/imgs/api/roll/add", (req, res) => {
+
+
+
+router.post("/imgs/api/roll/add", (req, res,next) => {
     console.log(req.body);
 
 
@@ -56,15 +59,15 @@ router.post("/imgs/api/roll/add", (req, res) => {
     // });
 
 
-
     //这是普通形式，获取data
+    // var da = ''
     // req.on("data", data => {
+    //     da += data
     //     console.log(111, data, 111);
     // });
-    // req.on('end',(data)=>{
-    //     console.log(data);
+    // req.on('end',()=>{
+    //     console.log(da);
     // })
-
 
 
     //拿到post的数据流，用formidable插件
@@ -82,7 +85,17 @@ router.post("/imgs/api/roll/add", (req, res) => {
     //     console.log(222, files, fields, 222);
     //     res.end("ok");
     // });
-    res.end('ok')
+
+
+    const {body} = req;
+    try {
+        console.log(body.toString);
+
+        // res.end("ok");
+    }catch (e) {
+        next(e)
+    }
+
 });
 
 

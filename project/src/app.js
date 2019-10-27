@@ -5,6 +5,7 @@ import router from "../router/index";
 
 import rollRouter from "../router/roll";
 import bodyParser from "../middle_wares/body_parser";
+import errRouter from "../middle_wares/error.log";
 
 
 const app = express();
@@ -33,6 +34,15 @@ app.use(router);
 //轮播图路由
 
 app.use(rollRouter);
+
+
+
+
+//err中间键的添加
+
+app.use(errRouter);
+
+
 
 //404放最后的路由
 
