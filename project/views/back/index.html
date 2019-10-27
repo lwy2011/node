@@ -9,5 +9,17 @@
 </head>
 <body>
 <h4>后台</h4>
+<div class="img">
+    <form action="/imgs/api/roll/add" method="post">
+        <input type="file" class="upload" >
+        <input type="submit" value="提交">
+    </form>
+</div>
+<script>
+    var upload = document.querySelector(".upload");
+    upload.addEventListener('change',function () {
+        console.log(upload.files, 222);
+    });
+</script>
 </body>
 </html>

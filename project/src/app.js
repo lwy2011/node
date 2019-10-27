@@ -2,7 +2,6 @@ import express from "express";
 import configs from "../config";
 import nunjucks from "nunjucks";
 import router from "../router/index";
-import url from "url";
 
 import rollRouter from "../router/roll";
 
@@ -31,10 +30,10 @@ app.use(rollRouter);
 //404放最后的路由
 
 app.use((req, res) => {
-    const urlObj = url.parse(req.url);
-    const helper = req.url.indexOf("web") >= 0 ? "web" : "back";
-    console.log(urlObj, req.url);
-    res.render("404.html", {helper});
+    // const urlObj = url.parse(req.url);
+    // const helper = req.url.indexOf("web") >= 0 ? "web" : "back";
+    // console.log(urlObj, req.url);
+    res.render("404.html");
 });
 
 app.listen(3000, () => {
