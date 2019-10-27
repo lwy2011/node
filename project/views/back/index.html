@@ -10,15 +10,47 @@
 <body>
 <h4>后台</h4>
 <div class="img">
-    <form action="/imgs/api/roll/add" method="post">
-        <input type="file" class="upload" >
+    <form action="/imgs/api/roll/add" method="post" class="form" enctype="multipart/form-data">
+        <input type="file" class="upload" name="roll">
+        <label>
+            姓名：
+            <input type="text" name="user">
+        </label>
         <input type="submit" value="提交">
     </form>
 </div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
+    const ajax = (url, method, ...rest) => {
+        return axios(
+            {
+                method,
+                url,
+                baseURL:'localhost:3000',
+                ...rest
+            }
+        )
+    };
     var upload = document.querySelector(".upload");
-    upload.addEventListener('change',function () {
-        console.log(upload.files, 222);
+    var form = document.querySelector(".form");
+    upload.addEventListener("change", function () {
+        console.log(upload.files, 222,new FormData(form));
+        ajax(
+            'imgs/api/roll/add',
+            'post',
+            {
+                data:new FormData(form),
+                contentType:false
+            }
+        ).then(
+            res=>{
+                console.log(res);
+                return res
+            }
+        ).catch(
+            e=>{throw e}
+        );
+
     });
 </script>
 </body>
