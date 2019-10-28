@@ -29,6 +29,15 @@ router.post("/edit", (req, res, next) => {
 });
 
 
+//删除路由
+router.get("/remove/:id", (req, res, next) => {
+    RollModel.findByIdAndRemove(req.params.id,(err,docs)=>{
+        if(err){return next(err)}
+        res.json(docs)
+    })
+});
+
+
 //添加图片路由1
 router.post("/add", (req, res, next) => {
     // console.log(req.body, "add", new Date());
@@ -55,24 +64,24 @@ router.post("/add", (req, res, next) => {
 
     //第二种创建方法
 
-    // const img = new RollModel({
-    //     img_title: "轮播图测试",
-    //     img_url: "uploads/blog/201312/04/20131204184148_hhXUT.jpeg",
-    //     img_link: "http://b-ssl.duitang.com",
-    //     createdAt: new Date(),
-    //     l_edit: new Date()
-    // });
-    //
-    // img.save((err,data) => {
-    //     if (err) {
-    //         throw err;
-    //     }
-    //     res.json({
-    //         status: 200,
-    //         result: "添加图片成功！",
-    //         data
-    //     });
-    // });
+    const img = new RollModel({
+        img_title: "轮播图测试",
+        img_url: "uploads/blog/201312/04/20131204184148_hhXUT.jpeg",
+        img_link: "http://b-ssl.duitang.com",
+        createdAt: new Date(),
+        l_edit: new Date()
+    });
+
+    img.save((err,data) => {
+        if (err) {
+            next(err) ;
+        }
+        res.json({
+            status: 200,
+            result: "添加图片成功！",
+            data
+        });
+    });
 
 
     //这是普通形式，获取data
@@ -103,15 +112,7 @@ router.post("/add", (req, res, next) => {
     // });
 
 
-    const {body} = req;
-    try {
-        // console.log(body.toString);
-        res.send(req.body);
 
-        res.end("ok");
-    } catch (e) {
-        next(e);
-    }
 
 });
 
