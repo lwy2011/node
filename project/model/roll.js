@@ -22,7 +22,7 @@ const imgSchema = mongoose.Schema({
     }
 });
 //db.imgs.renameCollection('rollImg')
-const RollModel = db.model("rollImgs", imgSchema);
+const RollModel = db.model("rollimgs", imgSchema);
 
 
 const creatRoll = data => RollModel.create(

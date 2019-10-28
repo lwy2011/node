@@ -4,20 +4,20 @@ import nunjucks from "nunjucks";
 import router from "../router/index";
 
 import rollRouter from "../router/roll";
+import rollEditRouter from '../router/roll.edit.js'
 import bodyParser from "../middle_wares/body_parser";
 import errRouter from "../middle_wares/error.log";
 
 
 const app = express();
 
-//添加bodyParser中间键，为了区分get,post,请求，并把post请求的数据放到req.body的上面
 
-app.use(bodyParser);
+
+
 
 
 //静态文件的路由设置
 app.use(express.static(configs.publicPath));
-
 
 //模板引擎的中间键的配置
 nunjucks.configure(configs.viewPath, {
@@ -27,21 +27,24 @@ nunjucks.configure(configs.viewPath, {
 });
 
 
+//添加bodyParser中间键，为了区分get,post,请求，并把post请求的数据放到req.body的上面
+
+app.use(bodyParser);
+
+
 //配置router
 
 app.use(router);
 
 //轮播图路由
 
-app.use(rollRouter);
-
-
+app.use("/back/roll", rollRouter);
+app.use("/imgs/api/roll", rollEditRouter);
 
 
 //err中间键的添加
 
 app.use(errRouter);
-
 
 
 //404放最后的路由

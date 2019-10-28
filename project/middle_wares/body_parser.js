@@ -24,9 +24,9 @@ const bodyParser = (req, res, next) => {
     });
     req.on("end", () => {
         req.body = querystring.parse(result);   //querystring插件处理urlencoded字符串成对象
-        console.log(result, 33, req.body);
+        // console.log( 'bo', req.body);
+        next();
     });
-    next();
 };
 
 
