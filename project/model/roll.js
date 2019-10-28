@@ -22,10 +22,10 @@ const imgSchema = mongoose.Schema({
     }
 });
 //db.imgs.renameCollection('rollImg')
-const imgModel = db.model("rollImg", imgSchema);
+const RollModel = db.model("rollImgs", imgSchema);
 
 
-const creatImg = data => imgModel.create(
+const creatRoll = data => RollModel.create(
     {
         img_title: data.title,
         img_url: data.url,
@@ -36,8 +36,8 @@ const creatImg = data => imgModel.create(
     }
 );
 
-export default imgModel;
-export {creatImg}
+export default RollModel;
+export {creatRoll}
 
 
 

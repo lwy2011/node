@@ -16,7 +16,7 @@ const errorSchema = mongoose.Schema({
     }
 });
 
-const errorModel = db.model("error_log", errorSchema);
+const errorModel = db.model("error_logs", errorSchema);
 
 
 export default errorModel;

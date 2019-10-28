@@ -1,20 +1,40 @@
 //轮播图路由
 import express from "express";
-import ImgModel from "../model/roll";
+import RollModel from "../model/roll";
 import formidable from "formidable";
 import path from "path";
 
 const router = express.Router();
 
-router.get("/imgs", (req, res) => {
 
+//前端界面获取
+router.get("/back/roll", (req, res, next) => {
+    RollModel.find({}, null, (err, docs) => {
+        if (err) {
+            return next(err);
+        }
+        console.log(docs, "roll");
+        res.render("back/roll.html", {lists: docs});
+    });
+    // const roll = new RollModel({
+    //     img_title: "轮播图测试",
+    //     img_url: "uploads/blog/201312/04/20131204184148_hhXUT.jpeg",
+    //     img_link: "http://b-ssl.duitang.com",
+    //     createdAt: new Date(),
+    //     l_edit: new Date()
+    // });
+    // roll.save((err, data) => {
+    //     console.log(err || data);
+    // });
+});
+
+router.get("/back/roll/add", (req, res) => {
+    res.render("back/roll_add.html");
 });
 
 
-
-
-
-router.post("/imgs/api/roll/add", (req, res,next) => {
+//post路由
+router.post("/imgs/api/roll/add", (req, res, next) => {
     console.log(req.body);
 
 
@@ -22,7 +42,7 @@ router.post("/imgs/api/roll/add", (req, res,next) => {
 
     //第一种创建方法
 
-    // ImgModel.create({
+    // RollModel.create({
     //     img_title: "轮播图测试",
     //     img_url: 'uploads/blog/201312/04/20131204184148_hhXUT.jpeg',
     //     img_link:'http://b-ssl.duitang.com',
@@ -39,7 +59,7 @@ router.post("/imgs/api/roll/add", (req, res,next) => {
 
     //第二种创建方法
 
-    // const img = new ImgModel({
+    // const img = new RollModel({
     //     img_title: "轮播图测试",
     //     img_url: "uploads/blog/201312/04/20131204184148_hhXUT.jpeg",
     //     img_link: "http://b-ssl.duitang.com",
@@ -92,8 +112,8 @@ router.post("/imgs/api/roll/add", (req, res,next) => {
         console.log(body.toString);
 
         // res.end("ok");
-    }catch (e) {
-        next(e)
+    } catch (e) {
+        next(e);
     }
 
 });

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>roll</title>
+</head>
+<body>
+<header>
+    轮播图管理
+</header>
+    <ul>
+        <li>
+            <a href="/back/roll/add">去添加</a>
+        </li>
+        {% for list in lists %}
+        <li>
+            <img src="{{list.img_link + list.img_url}}" alt="img">
+            <p>{{list.img_title}}</p>
+        </li>
+
+        {% else %}
+        <li>
+            <p>暂无数据</p>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -7,7 +7,7 @@ mongoose.connect("mongodb://localhost:27017/project", {useNewUrlParser: true});
 const db = mongoose.connection;
 
 db.on("open", () => {
-    console.log("opening");
+    console.log("db opening");
 });
 
 db.on("error", (e) => {

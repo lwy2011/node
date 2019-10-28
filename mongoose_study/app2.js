@@ -80,7 +80,9 @@ studentModel.find(
         console.log(err || data);
     }
 );
-
+studentModel.find( (err, docs) => {
+    console.log(5,docs,5);
+});
 //修改其中的属性，匹配一个
 // studentModel.updateOne({name: "水"}, {$set: {sex: "女"}}, err => {
 //     console.log(!err && "ok");
