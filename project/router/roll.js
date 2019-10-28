@@ -7,6 +7,10 @@ import path from "path";
 const router = express.Router();
 
 
+
+
+
+
 //前端界面获取
 router.get("/back/roll", (req, res, next) => {
     RollModel.find({}, null, (err, docs) => {
@@ -28,12 +32,28 @@ router.get("/back/roll", (req, res, next) => {
     // });
 });
 
+
+
+//获取单个图片
+
+router.get("/back/roll/singer/:id", (req, res, next) => {
+    const {id} = req.params;
+    RollModel.findById(id, {"__v":0,l_edit:0},(e, docs) => {
+        if (e) {return next(e);}
+        res.json({
+            status: 200,
+            result: docs
+        });
+    });
+});
+
+
 router.get("/back/roll/add", (req, res) => {
     res.render("back/roll_add.html");
 });
 
 
-//post路由
+//post路由1
 router.post("/imgs/api/roll/add", (req, res, next) => {
     console.log(req.body);
 
