@@ -16,7 +16,8 @@ const app = express();
 
 
 
-//静态文件的路由设置
+//静态文件的路由设置1
+
 app.use(express.static(configs.publicPath));
 
 //模板引擎的中间键的配置

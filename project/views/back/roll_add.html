@@ -11,7 +11,7 @@
 <header>
     轮播图添加
 </header>
-<form action="/imgs/api/roll/add" method="post">
+<form action="/imgs/api/roll/add" method="post" class="form" enctype="multipart/form-data">
     <label>
         <input type="text" required name="img_title">
     </label>
@@ -21,7 +21,7 @@
     </label>
     <br>
     <label>
-        <input type="text" required name="img_url">
+        <input type="file" required name="img_url" class="upload">
     </label>
     <br>
     <label>
@@ -31,5 +31,39 @@
     <br>
     <input type="submit" value="提交">
 </form>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    // const ajax = (url, method, ...rest) => {
+    //     return axios(
+    //         {
+    //             method,
+    //             url,
+    //             baseURL:'localhost:3000',
+    //             ...rest
+    //         }
+    //     )
+    // };
+    // var upload = document.querySelector(".upload");
+    // var form = document.querySelector(".form");
+    // upload.addEventListener("change", function () {
+    //     console.log(upload.files, 222,new FormData(form));
+    //     ajax(
+    //         'imgs/api/roll/add',
+    //         'post',
+    //         {
+    //             data:new FormData(form),
+    //             contentType:false
+    //         }
+    //     ).then(
+    //         res=>{
+    //             console.log(res);
+    //             return res
+    //         }
+    //     ).catch(
+    //         e=>{throw e}
+    //     );
+    //
+    // });
+</script>
 </body>
 </html>

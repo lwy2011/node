@@ -3,7 +3,7 @@ import express from "express";
 import RollModel from "../model/roll";
 import formidable from "formidable";
 import path from "path";
-
+import configs from '../config.js'
 const router = express.Router();
 
 
@@ -40,8 +40,10 @@ router.get("/remove/:id", (req, res, next) => {
 
 //添加图片路由11
 router.post("/add", (req, res, next) => {
-    console.log(req.body, "add");
-    const {img_title, img_link, img_url, createdAt} = req.body;
+    // 1  ++++无file的post请求！
+
+    // console.log(req.body, "add");
+    // const {img_title, img_link, img_url, createdAt} = req.body;
 
     //测试数据库的写入
 
@@ -64,21 +66,21 @@ router.post("/add", (req, res, next) => {
 
     //第二种创建方法
 
-    const img = new RollModel({
-        l_edit: new Date().toLocaleString(),
-        img_title, img_link, img_url, createdAt
-    });
-
-    img.save((err, data) => {
-        if (err) {
-            next(err);
-        }
-        res.json({
-            status: 200,
-            result: "添加图片成功！",
-            data
-        });
-    });
+    // const img = new RollModel({
+    //     l_edit: new Date().toLocaleString(),
+    //     img_title, img_link, img_url, createdAt
+    // });
+    //
+    // img.save((err, data) => {
+    //     if (err) {
+    //         next(err);
+    //     }
+    //     res.json({
+    //         status: 200,
+    //         result: "添加图片成功！",
+    //         data
+    //     });
+    // });
 
 
     //这是普通形式，获取data
@@ -92,21 +94,36 @@ router.post("/add", (req, res, next) => {
     // })
 
 
+    // 2   +++++++有file的POST请求： ++++
+
     //拿到post的数据流，用formidable插件
-    //创建实例
-    // const form = new formidable.IncomingForm();
-    // //指定文件存储地址
-    // form.uploadDir = path.join(__dirname, "../data/imgs");
-    // //文件的格式不变
-    // form.keepExtensions = true;
-    // //解析req的数据
-    // form.parse(req, (err, fields, files) => {
-    //     if (err) {
-    //         throw err;
-    //     }
-    //     console.log(222, files, fields, 222);
-    //     res.end("ok");
-    // });
+    // 创建实例
+    const form = new formidable.IncomingForm();
+    //指定文件存储地址
+    form.uploadDir =  configs.uploadImgPath;
+    //文件的格式不变
+    form.keepExtensions = true;
+    //解析req的数据1
+    // console.log(req,'req');
+    form.parse(req, (err, fields, files) => {  //上传好图片了，这时候！
+        if (err) {
+            return next(err);
+        }
+        console.log(222, files, fields, 222);
+
+
+        //图片上传了，拿到了图片路径，然后再存储数据库图片的信息数据1
+        const {path} = files.img_url;
+        const arr = path.split("public");
+        fields.img_url = arr[arr.length - 1];
+
+        const img = new RollModel(fields);
+
+        img.save((e, data) => {
+            if (e) {return next(e);}
+            res.json(data);
+        });
+    });
 
 
 });
