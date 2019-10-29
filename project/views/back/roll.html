@@ -11,21 +11,42 @@
 <header>
     轮播图管理
 </header>
-    <ul>
-        <li>
+<table>
+    <thead>
+    <tr>
+        <td>序号</td>
+        <td>图片名称</td>
+        <td>图片展示</td>
+        <td>图片链接</td>
+        <td>上架时间</td>
+        <td>操作</td>
+        <td>
             <a href="/back/roll/add">去添加</a>
-        </li>
-        {% for list in lists %}
-        <li>
+        </td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for list in lists %}
+    <tr>
+        <td>{{loop.index }}</td>
+        <td>{{list.img_title}}</td>
+        <td>
             <img src="{{list.img_link + list.img_url}}" alt="img">
-            <p>{{list.img_title}}</p>
-        </li>
+        </td>
+        <td>{{list.img_link}}</td>
+        <td>{{list.createdAt}}</td>
+        <td>
+            <a href="/back/roll/edit/{{list.id}}">编辑</a>
+            <a href="/imgs/api/roll/remove/{{list.id}}">删除</a>
+        </td>
+    </tr>
+    {% else %}
+    <tr>
+        暂无数据
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
-        {% else %}
-        <li>
-            <p>暂无数据</p>
-        </li>
-        {% endfor %}
-    </ul>
 </body>
 </html>

@@ -26,8 +26,17 @@ router.get("/", (req, res, next) => {
     // });
 });
 
+//去编辑界面单独
 
-//获取单个图片1
+router.get("/edit/:id", (req, res, next) => {
+    RollModel.findById(req.params.id, {"__v": 0, l_edit: 0}, (e, docs) => {
+        if (e) {return next(e);}
+        console.log(docs, "d");
+        res.render('back/roll_edit.html',{data:docs})
+    });
+});
+
+//获取单个图片1111
 
 router.get("/singer/:id", (req, res, next) => {
     // const {id} = req.params;

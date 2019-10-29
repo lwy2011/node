@@ -4,19 +4,23 @@ import ErrorModel from "../model/error.log";
 
 const errRouter = (err, req, res, next) => {
     // console.log(err, 222);
-    const error = new ErrorModel({
-        error_name: err.name,
-        error_message: err.message,
-        error_stack: err.stack
-    });
-    error.save((err, data) => {
-        // console.log(data, "ok");
-        res.end({
-            status: 500,
-            result: "服务器出错，请稍后再试！",
-            message: err.message
+    if (err) {
+        console.log("err:", err, "err.log");
+        const error = new ErrorModel({
+            error_name: err.name,
+            error_message: err.message,
+            error_stack: err.stack
         });
-    });
+        error.save((e, data) => {
+            // console.log(data, "ok");
+            if (e) {console.log(e);}
+            res.json({
+                status: 500,
+                result: "服务器出错，或数据库查找不到，请稍后再试！",
+                detail : err.message
+            });
+        });
+    }
 };
 
 export default errRouter;

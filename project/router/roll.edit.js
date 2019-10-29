@@ -12,16 +12,16 @@ const router = express.Router();
 
 //修改操作的路由
 
-router.post("/edit", (req, res, next) => {
+router.post("/edit/:id", (req, res, next) => {
     const {body} = req;
     // console.log(body.id, "edit");
-    RollModel.findById(body.id, (err, docs) => {
+    RollModel.findById(req.params.id, (err, docs) => {
         if (err) {return next(err);}
-        console.log(docs);
-        Object.keys(body).map(key => key !== "id" && (
+        // console.log(docs);
+        Object.keys(body).map(key => (
             docs[key] = body[key]
         ));
-        docs.l_edit = new Date();
+        docs.l_edit = new Date().toLocaleString();
         docs.save();
         res.json(docs);
     });
@@ -68,8 +68,8 @@ router.post("/add", (req, res, next) => {
         img_title: "轮播图测试",
         img_url: "uploads/blog/201312/04/20131204184148_hhXUT.jpeg",
         img_link: "http://b-ssl.duitang.com",
-        createdAt: new Date(),
-        l_edit: new Date()
+        createdAt: new Date().toLocaleString() ,
+        l_edit: new Date().toLocaleString()
     });
 
     img.save((err,data) => {

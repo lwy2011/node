@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>roll edit</title>
+</head>
+<body>
+<img src="{{data.img_url}}" alt="img">
+<form action="/imgs/api/roll/edit/{{data.id}}" method="post">
+    <label>
+        名称 ： <input type="text" name="img_title" value="{{data.img_title}}" required>
+    </label>
+    <br>
+    <label>
+        图片链接 ： <input type="text" name="img_link" value="{{data.img_link}}" required>
+    </label>
+    <br>
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>
