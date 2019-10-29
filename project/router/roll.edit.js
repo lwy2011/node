@@ -31,17 +31,17 @@ router.post("/edit/:id", (req, res, next) => {
 
 //删除路由
 router.get("/remove/:id", (req, res, next) => {
-    RollModel.findByIdAndRemove(req.params.id,(err,docs)=>{
-        if(err){return next(err)}
-        res.json(docs)
-    })
+    RollModel.findByIdAndRemove(req.params.id, (err, docs) => {
+        if (err) {return next(err);}
+        res.json(docs);
+    });
 });
 
 
-//添加图片路由1
+//添加图片路由11
 router.post("/add", (req, res, next) => {
-    // console.log(req.body, "add", new Date());
-
+    console.log(req.body, "add");
+    const {img_title, img_link, img_url, createdAt} = req.body;
 
     //测试数据库的写入
 
@@ -65,16 +65,13 @@ router.post("/add", (req, res, next) => {
     //第二种创建方法
 
     const img = new RollModel({
-        img_title: "轮播图测试",
-        img_url: "uploads/blog/201312/04/20131204184148_hhXUT.jpeg",
-        img_link: "http://b-ssl.duitang.com",
-        createdAt: new Date().toLocaleString() ,
-        l_edit: new Date().toLocaleString()
+        l_edit: new Date().toLocaleString(),
+        img_title, img_link, img_url, createdAt
     });
 
-    img.save((err,data) => {
+    img.save((err, data) => {
         if (err) {
-            next(err) ;
+            next(err);
         }
         res.json({
             status: 200,
@@ -110,8 +107,6 @@ router.post("/add", (req, res, next) => {
     //     console.log(222, files, fields, 222);
     //     res.end("ok");
     // });
-
-
 
 
 });

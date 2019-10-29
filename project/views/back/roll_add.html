@@ -11,20 +11,25 @@
 <header>
     轮播图添加
 </header>
-    <ul>
-        <li>
-            <a href="/back/roll/add">去添加</a>
-        </li>
-        <% for list in lists %>
-        <li>
-            <img src={{list.image_link}} alt="img">
-            <p>{{list.image_title}}</p>
-        </li>
-        <% else %>
-        <li>
-            <p>暂无数据</p>
-        </li>
-        <% endfor %>
-    </ul>
+<form action="/imgs/api/roll/add" method="post">
+    <label>
+        <input type="text" required name="img_title">
+    </label>
+    <br>
+    <label>
+        <input type="text" required name="img_link">
+    </label>
+    <br>
+    <label>
+        <input type="text" required name="img_url">
+    </label>
+    <br>
+    <label>
+        创建时间
+        <input type="date" required name="createdAt">
+    </label>
+    <br>
+    <input type="submit" value="提交">
+</form>
 </body>
 </html>
