@@ -8,17 +8,69 @@
     <title>roll edit</title>
 </head>
 <body>
-<img src="{{data.img_url}}" alt="img">
-<form action="/imgs/api/roll/edit/{{data.id}}" method="post" >
+<img src="{{data.img_url}}" alt="img" class="img" initurl="{{data.img_url}}">
+<form action="/imgs/api/roll/edit/{{data.id}}" method="post" enctype="multipart/form-data">
     <label>
-        名称 ： <input type="text" name="img_title" value="{{data.img_title}}" required>
+        名称 ： <input type="text" name="img_title" value="{{data.img_title}}" class="title" required>
     </label>
     <br>
     <label>
-        图片链接 ： <input type="text" name="img_link" value="{{data.img_link}}" required>
+        图片链接 ： <input type="text" name="img_link" value="{{data.img_link}}" class="link" required>
     </label>
     <br>
-    <input type="submit" value="提交">
+    <input type="file" name="img_url" class="upload" dataId="{{data.id}}">
+    <input type="button" value="提交" class="btn">
 </form>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    const img = document.querySelector(".img");
+    const upload = document.querySelector(".upload");
+    const title = document.querySelector(".title");
+    const link = document.querySelector(".link");
+    const btn = document.querySelector(".btn");
+
+    const id = upload.getAttribute("dataId");
+    const defaultUrl = img.getAttribute("initurl");
+
+    // console.log(id, defaultUrl);
+
+    //用formData 来提交数据
+    const ajax = data => axios({
+        method: "post",
+        url: "http://localhost:3000/imgs/api/roll/edit/" + id,
+        data : data,
+        contentType:false
+    });
+
+    btn.onclick = () => {
+        const img_title = title.value;
+        const img_link = link.value;
+        const img_url = upload.files[0] || defaultUrl;
+
+        console.log(img_title, img_link, img_url);
+        const form = new FormData();
+        form.append("img_title", img_title);
+        form.append("img_link", img_link);
+        form.append("img_url", img_url);
+        ajax(form).then(res=>{
+            console.log(res,'ok');
+        })
+    };
+
+    upload.onchange = e => {
+        const file = e.target.files[0];
+        console.log(file);
+        const reader = new FileReader();
+        reader.onload = () => {
+            img.src = reader.result;
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+        reader.onloadend = () => {
+            console.log(reader.result);
+        };
+    };
+</script>
 </body>
 </html>
