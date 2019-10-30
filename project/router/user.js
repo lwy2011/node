@@ -1,16 +1,20 @@
 import express from "express";
 
+import configs from "../config.js";
 
 const router = express.Router();
 
 router.get("/back/login", (req, res) => {
-    res.render('back/login.html')
+    res.render("back/login.html", {key: configs.user_md5_key});
 });
-router.get("/back/user_center", (req, res) => {
-    res.render('back/user_center.html')
+router.get("/back/register", (req, res) => {
+    res.render("back/register.html");
 });
-router.get("/back/user_reset_pwd", (req, res) => {
-    res.render('back/user_reset_pwd.html')
+router.get("/back/user_center/:id", (req, res) => {
+    res.render("back/user_center.html");
+});
+router.get("/back/user_reset_pwd/:id", (req, res) => {
+    res.render("back/user_reset_pwd.html");
 });
 
 export default router;

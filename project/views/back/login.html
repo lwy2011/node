@@ -8,17 +8,42 @@
     <title>login</title>
 </head>
 <body>
-<form action="/back/login" method="post">
+<form action="/user/api/login" method="post">
     <h4>登录</h4>
     <label>
-        <input type="text" name="username" required>
+        <input type="text" name="username" required class="name">
     </label>
     <br>
     <label>
-        <input type="password" name="password" required>
+        <input type="password" name="password" required class="pwd" data-key="{{key}}">
     </label>
     <br>
-    <input type="submit" value="登录">
+    <input type="button" value="登录" class="btn">
 </form>
+<a href="/back/register">去注册</a>
+<script src="js/md5.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+    const btn = document.querySelector(".btn");
+
+    btn.onclick = () => {
+        const name = document.querySelector(".name").value;
+        const pwd = document.querySelector(".pwd");
+        const key = pwd.getAttribute("data-key");
+        const pwdVal = md5(pwd.value + key);
+        console.log(pwdVal);
+        // const form = new FormData();   这里不需要，因为后台不需要用formidable处理
+        // form.append("username", name);
+        // form.append("password", pwdVal);
+        axios({
+            url: "/user/api/login",
+            data: `username=${name}&password=${pwdVal}`,
+            method: "post"
+        }).then(res => {
+            console.log(res);
+        });
+    };
+</script>
 </body>
 </html>

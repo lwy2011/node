@@ -8,6 +8,7 @@ import rollEditRouter from "../router/roll.edit.js";
 import bodyParser from "../middle_wares/body_parser";
 import errRouter from "../middle_wares/error.log";
 import userRouter from "../router/user.js";
+import userApiRouter from "../router/user.edit.js";
 
 const app = express();
 
@@ -42,6 +43,9 @@ app.use("/imgs/api/roll", rollEditRouter);
 
 
 app.use(userRouter);
+
+app.use("/user/api", userApiRouter);
+
 
 //err中间键的添加
 
