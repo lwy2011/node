@@ -4,16 +4,12 @@ import nunjucks from "nunjucks";
 import router from "../router/index";
 
 import rollRouter from "../router/roll";
-import rollEditRouter from '../router/roll.edit.js'
+import rollEditRouter from "../router/roll.edit.js";
 import bodyParser from "../middle_wares/body_parser";
 import errRouter from "../middle_wares/error.log";
-
+import userRouter from "../router/user.js";
 
 const app = express();
-
-
-
-
 
 
 //静态文件的路由设置1
@@ -42,6 +38,10 @@ app.use(router);
 app.use("/back/roll", rollRouter);
 app.use("/imgs/api/roll", rollEditRouter);
 
+//用户路由
+
+
+app.use(userRouter);
 
 //err中间键的添加
 

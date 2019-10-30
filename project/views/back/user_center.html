@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>user-center</title>
+</head>
+<body>
+<h4>用户中心</h4>
+<form action="/user/api/set/:id" method="post">
+    <label>
+        用户名
+        <input type="text" name="username" class="name" value="{{data.username}}">
+    </label>
+    <br>
+    <img src="{{data.avatar}}" alt="img" style="width: 150px;" >
+    <br>
+    <label >
+        <input type="file" name="avatar" class="avatar">
+    </label>
+    <br>
+    <label>
+        email :
+        <input type="email" name="email" value="{{data.email}}">
+    </label>
+    <br>
+    <label>
+        加入日期 :
+        <input type="date" name="join_at" value="{{data.join_at}}">
+    </label>
+    <br>
+    <label>
+        自我介绍 :
+        <textarea name="intro" class="intro"  data-id="{{data.id}}" role="5" rows="5">
+            {{data.intro}}
+        </textarea>
+    </label>
+    <br>
+    <input type="button" value="提交" class="btn">
+    <a href="/back/user_reset_pwd/{{data.id}}">修改密码？</a>
+</form>
+<script >
+
+</script>
+</body>
+</html>
