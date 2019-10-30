@@ -8,7 +8,7 @@
     <title>roll edit</title>
 </head>
 <body>
-<img src="{{data.img_url}}" alt="img" class="img" initurl="{{data.img_url}}">
+<img src="{{data.img_url}}" alt="img" class="img" initurl="{{data.img_url}}" style="width: 200px">
 <form action="/imgs/api/roll/edit/{{data.id}}" method="post" enctype="multipart/form-data">
     <label>
         名称 ： <input type="text" name="img_title" value="{{data.img_title}}" class="title" required>

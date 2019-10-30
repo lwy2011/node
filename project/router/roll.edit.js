@@ -46,23 +46,26 @@ router.post("/edit/:id", (req, res, next) => {
         // const arr = img_url && img_url.path.split("public");
 
 
-
         img_url && (
             fields.img_url =
                 configs.uploadImgPathHelper + path.basename(img_url.path)
         );
 
         RollModel.findById(req.params.id, (err, docs) => {
+            const old_url = docs.img_url;
             console.log(configs.uploadImgPath +
-                docs.img_url.replace(configs.uploadImgPathHelper, "/"));
-            img_url && fs.unlink(
+                old_url.replace(configs.uploadImgPathHelper, "/"));
+            img_url && old_url &&
+            fs.unlink(
                 configs.uploadImgPath +
-                docs.img_url.replace(configs.uploadImgPathHelper, "/"),
+                old_url.replace(configs.uploadImgPathHelper, "/"),
                 e => {
                     console.log(e || "deleted");
                 }
             );
+
             if (err) {return next(err);}
+
             Object.keys(fields).map(key => docs[key] = fields[key]);
             docs.l_edit = new Date().toLocaleString();
             docs.save((e, data) => {
@@ -81,18 +84,21 @@ router.post("/edit/:id", (req, res, next) => {
 
 //删除路由
 router.get("/remove/:id", (req, res, next) => {
-    RollModel.findByIdAndRemove(req.params.id, (err, docs) => {
+    RollModel.deleteOne({_id: req.params.id}, (err, docs) => {
+        console.log(req.params.id);
         if (err) {return next(err);}
         // console.log(configs.uploadImgPath +
         //     docs.img_url.replace(configs.uploadImgPathHelper, "/"));
-        fs.unlink(
-            configs.uploadImgPath +
-            docs.img_url.replace(configs.uploadImgPathHelper, "/"),
-            e => {
-                // if (e) {console.log(e);}
-                console.log(e || "deleted");
-            }
-        );
+
+        // const old_url = docs.img_url;
+        // old_url && fs.unlink(
+        //     configs.uploadImgPath +
+        //     old_url.replace(configs.uploadImgPathHelper, "/"),
+        //     e => {
+        //         // if (e) {console.log(e);}
+        //         console.log(e || "deleted");
+        //     }
+        // );
         res.json(docs);
     });
 });
@@ -172,10 +178,11 @@ router.post("/add", (req, res, next) => {
         console.log(222, files, fields, 222);
 
 
-        //图片上传了，拿到了图片路径，然后再存储数据库图片的信息数据1
+        //图片上传了，拿到了图片路径，然后再存储数据库图片的信息数据11
         // const {path} = files.img_url;
         // const arr = path.split("public");   //这里有个方法是path的模块里的，basename方法，也可以处理
         // fields.img_url = arr[arr.length - 1];
+
         fields.img_url = configs.uploadImgPathHelper + path.basename(files.img_url.path);
         const img = new RollModel(fields);
 
