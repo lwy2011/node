@@ -21,27 +21,31 @@ router.post("/add", (req, res, next) => {
 
 router.post("/login", (req, res, next) => {
     const {username, password} = req.body;
-    console.log(username, password,req.session);
+    console.log(username, password, req.session);
     User.findOne({username}, (e, docs) => {
         if (e) {return next(e);}
-        if(docs){
-            if( docs.password === password){
+        if (docs) {
+            if (docs.password === password) {
+
+                //添加session的tocken，值为用户的数据的id，并存到数据库
+                req.session.tocken = docs.id;
+
                 res.json({
-                    status:200,
-                    result:'登陆成功！',
-                    token : docs.id    //tocken值！
-                })
-            }else {
+                    status: 200,
+                    result: "登陆成功！",
+                    token: docs.id    //tocken值！
+                });
+            } else {
                 res.json({
-                    status:1,
-                    result:'密码错误！',
-                })
+                    status: 1,
+                    result: "密码错误！",
+                });
             }
-        }else {
+        } else {
             res.json({
-                status:2,
-                result:'用户名不存在！',
-            })
+                status: 2,
+                result: "用户名不存在！",
+            });
         }
     });
 });
