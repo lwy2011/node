@@ -21,7 +21,7 @@ router.post("/add", (req, res, next) => {
 
 router.post("/login", (req, res, next) => {
     const {username, password} = req.body;
-    console.log(username, password);
+    console.log(username, password,req.session);
     User.findOne({username}, (e, docs) => {
         if (e) {return next(e);}
         if(docs){

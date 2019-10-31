@@ -9,9 +9,27 @@ import bodyParser from "../middle_wares/body_parser";
 import errRouter from "../middle_wares/error.log";
 import userRouter from "../router/user.js";
 import userApiRouter from "../router/user.edit.js";
+import session from "express-session";
 
 const app = express();
 
+
+// 设置session中间键，为了把请求的数据的session存到req.session中
+
+const sessionStorage = require("connect-mongo")(session);
+
+app.use(session({
+    name:'user_id',   //session ID cookie 的名字，自有默认值  http://www.expressjs.com.cn/en/resources/middleware/session.html
+    cookie:{maxAge:12*3600},    //过期时间
+    secret: 'project',  //加密的字符串
+    resave: false,              //强制每次请求都要重新更新cookie设置，重置过期时间
+    saveUninitialized: true,            //强制储存未初始化的session，这时候session未设定属性或值。设定cookie前，有助于登录验证，权限控制，减轻服务器压力
+    rolling:true,    //强制每次响应都
+    store:new sessionStorage({
+        url:'mongodb://127.0.0.1/project',   //连接数据库地址，https://www.npmjs.com/package/connect-mongo
+        touchAfter: 6 * 3600 // time period in seconds   监听并更新session的数据库的信息的触发时长
+    })
+}));
 
 //静态文件的路由设置1
 

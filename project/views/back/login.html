@@ -28,7 +28,8 @@
     const btn = document.querySelector(".btn");
 
     btn.onclick = () => {
-        const name = document.querySelector(".name").value;
+        const nameDom = document.querySelector(".name");
+        const name = nameDom.value;
         const pwd = document.querySelector(".pwd");
         const key = pwd.getAttribute("data-key");
         const pwdVal = md5(pwd.value + key);
@@ -41,7 +42,16 @@
             data: `username=${name}&password=${pwdVal}`,
             method: "post"
         }).then(res => {
-            console.log(res);
+            console.log(res.data);
+            const {status, result, tocken} = res.data;
+            if (status === 200) {
+                alert(result);
+
+            } else {
+                status === 2 && (nameDom.value = "");
+                pwd.value = "";
+                alert(result)
+            }
         });
     };
 </script>
