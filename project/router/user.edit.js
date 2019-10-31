@@ -50,4 +50,17 @@ router.post("/login", (req, res, next) => {
     });
 });
 
+router.get("/quit", (req, res, next) => {
+    console.log("quit",req.session);
+    // req.session.cookie.maxAge = 0;
+    req.session.destroy(e => {
+        if (e) return next(e);
+        res.json({
+            status: 200,
+            result: "退出登录成功！"
+        });
+        console.log(res.session,'end');
+    });
+
+});
 export default router;

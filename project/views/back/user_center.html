@@ -15,9 +15,9 @@
         <input type="text" name="username" class="name" value="{{data.username}}">
     </label>
     <br>
-    <img src="{{data.avatar}}" alt="img" style="width: 150px;" >
+    <img src="{{data.avatar}}" alt="img" style="width: 150px;">
     <br>
-    <label >
+    <label>
         <input type="file" name="avatar" class="avatar">
     </label>
     <br>
@@ -33,16 +33,32 @@
     <br>
     <label>
         自我介绍 :
-        <textarea name="intro" class="intro"  data-id="{{data.id}}" cols="5" rows="5">
+        <textarea name="intro" class="intro" data-id="{{data.id}}" cols="5" rows="5">
             {{data.intro}}
         </textarea>
     </label>
     <br>
     <input type="button" value="提交" class="btn">
     <a href="/back/user_reset_pwd/{{data.id}}">修改密码？</a>
+    <button class="quit">quit</button>
 </form>
-<script >
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+<script>
+    const quit = document.querySelector(".quit");
+    quit.onclick = () => {
+        if (!sessionStorage.user) return alert("请先登录！");
+        axios.get("/user/api/quit").then(
+            res => {
+                if (res.status === 200) {
+                    sessionStorage.removeItem("user");
+                    window.location.href = "/back/login";
+                } else {
+                    console.log(res);
+                }
+            }
+        );
+    };
 </script>
 </body>
 </html>

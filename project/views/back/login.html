@@ -43,14 +43,19 @@
             method: "post"
         }).then(res => {
             console.log(res.data);
-            const {status, result, tocken} = res.data;
+            const {status, result, token} = res.data;
             if (status === 200) {
-                alert(result);
-
+                sessionStorage.setItem("user", token);
+                alert(result + "正在跳转，，，");
+                setTimeout(
+                    () => {
+                        window.location.href = `/back/user_center/${token}`;
+                    }, 1000
+                );
             } else {
                 status === 2 && (nameDom.value = "");
                 pwd.value = "";
-                alert(result)
+                alert(result);
             }
         });
     };
