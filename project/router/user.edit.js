@@ -2,6 +2,9 @@ import express from "express";
 import User from "../model/user.js";
 import md5 from "blueimp-md5";
 import {user_md5_key} from "../config.js";
+import formidable from "formidable";
+import config from "../config";
+import path from "path";
 
 const router = express.Router();
 
@@ -49,9 +52,36 @@ router.post("/login", (req, res, next) => {
         }
     });
 });
+//edit
+
+router.post("/edit/:id", (req, res, next) => {
+    const {id} = req.params;
+    const form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.uploadDir = config.uploadAvatarPath;
+    form.parse(req, (e, fields, files) => {
+        if (e) return next(e);
+        console.log(fields, files);
+        files.avatar && (
+            fields.avatar = config.uploadAvatarPathHelper + path.basename(files.avatar.path)
+        );
+        User.findById(id, (err, user) => {
+            if (err) return next(e);
+            Object.keys(fields).map(key => user[key] = fields[key]);
+            user.l_edit = new Date().toLocaleString();
+            user.save((e, docs) => {
+                if (e) return next(e);
+                res.json({
+                    status: 200,
+                    result: docs
+                });
+            });
+        });
+    });
+});
 
 router.get("/quit", (req, res, next) => {
-    console.log("quit",req.session);
+    console.log("quit", req.session);
     // req.session.cookie.maxAge = 0;
     req.session.destroy(e => {
         if (e) return next(e);
@@ -59,7 +89,7 @@ router.get("/quit", (req, res, next) => {
             status: 200,
             result: "退出登录成功！"
         });
-        console.log(res.session,'end');
+        console.log(res.session, "end");
     });
 
 });

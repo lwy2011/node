@@ -4,7 +4,9 @@ export default {
     publicPath:join(__dirname,'./public'),
     uploadImgPath:join(__dirname,'./public/uploadImgs'),
     uploadImgPathHelper : '/uploadImgs/',
-    user_md5_key:"@#@%$#WEEWWR322dssdaE3$Gs"
+    user_md5_key:"@#@%$#WEEWWR322dssdaE3$Gs",
+    uploadAvatarPath : join(__dirname,'./public/uploadAvatar'),
+    uploadAvatarPathHelper : '/uploadAvatar/'
 }
 
 //这是设置静态文件路径

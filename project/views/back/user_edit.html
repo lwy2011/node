@@ -5,18 +5,18 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>user-center</title>
+    <title>user-edit</title>
 </head>
 <body>
-<h4>用户中心</h4>
-<a href="/back/user/edit/{{data.id}}">去编辑</a>
+<h4>用户编辑</h4>
+<img src="{{data.avatar}}" alt="img" class="img" style="width: 150px;">
+
 <form action="/user/api/set/:id" method="post">
     <label>
         用户名
         <input type="text" name="username" class="name" value="{{data.username}}">
     </label>
     <br>
-    <img src="{{data.avatar}}" alt="img" style="width: 150px;">
     <br>
     <label>
         <input type="file" name="avatar" class="avatar">
@@ -33,16 +33,6 @@
     </label>
     <br>
     <label>
-        积分 :
-        <input type="number" name="points" value="{{data.points}}">
-    </label>
-    <br>
-    <label>
-        金币 :
-        <input type="number" name="gold" value="{{data.gold}}">
-    </label>
-    <br>
-    <label>
         自我介绍 :
         <textarea name="intro" class="intro" data-id="{{data.id}}" cols="5" rows="5">
             {{data.intro}}
@@ -56,6 +46,41 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
+    const $ = (str) => document.querySelector(str);
+    const img = $("img");
+    const avatar = $(".avatar");
+    avatar.onchange = () => {
+        const file = avatar.files[0];
+        const reader = new FileReader();
+        let stream = "";
+        reader.onload = () => {
+            stream += reader.result;
+        };
+        reader.onloadend = () => {
+            img.src = stream;
+        };
+        reader.onerror = () => {
+            alert("图片数据读取失败，预览不成功！");
+        };
+        reader.readAsDataURL(file);
+    };
+
+    $(".btn").onclick = () => {
+        if (!sessionStorage.user)return alert("请先登录！账号已过期！") ;
+        const form = new FormData($("form"));
+        // const file = avatar.files[0];
+        // !file && form.append("avatar",'');
+        axios({
+            method:'post',
+            contentType:false,
+            data:form,
+            url:'/user/api/edit/'+sessionStorage.user
+        }).then(res=>{
+            console.log(res);
+        })
+    };
+
+    //退出逻辑
     const quit = document.querySelector(".quit");
     quit.onclick = () => {
         if (!sessionStorage.user) return alert("请先登录！");
