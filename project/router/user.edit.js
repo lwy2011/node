@@ -62,7 +62,8 @@ router.post("/edit/:id", (req, res, next) => {
     form.parse(req, (e, fields, files) => {
         if (e) return next(e);
         console.log(fields, files);
-        files.avatar && (
+        const {avatar} = files;
+        avatar && avatar.size && (
             fields.avatar = config.uploadAvatarPathHelper + path.basename(files.avatar.path)
         );
         User.findById(id, (err, user) => {

@@ -10,7 +10,10 @@
 <body>
 <h4>用户编辑</h4>
 <img src="{{data.avatar}}" alt="img" class="img" style="width: 150px;">
-
+<label>
+    <input type="file" name="avatar" class="avatar">
+</label>
+<br>
 <form action="/user/api/set/:id" method="post">
     <label>
         用户名
@@ -18,10 +21,7 @@
     </label>
     <br>
     <br>
-    <label>
-        <input type="file" name="avatar" class="avatar">
-    </label>
-    <br>
+
     <label>
         email :
         <input type="email" name="email" value="{{data.email}}">
@@ -68,8 +68,8 @@
     $(".btn").onclick = () => {
         if (!sessionStorage.user)return alert("请先登录！账号已过期！") ;
         const form = new FormData($("form"));
-        // const file = avatar.files[0];
-        // !file && form.append("avatar",'');
+        const file = avatar.files[0];
+        file && form.append("avatar",file);
         axios({
             method:'post',
             contentType:false,
