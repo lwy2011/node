@@ -27,13 +27,13 @@ router.post("/login", (req, res, next) => {
         if (docs) {
             if (docs.password === password) {
 
-                //添加session的tocken，值为用户的数据的id，并存到数据库
-                req.session.tocken = docs.id;
+                //添加session的token，值为用户的数据的id，并存到数据库
+                req.session.token = docs.id;
 
                 res.json({
                     status: 200,
                     result: "登陆成功！",
-                    token: docs.id    //tocken值！
+                    token: docs.id    //token值！
                 });
             } else {
                 res.json({
