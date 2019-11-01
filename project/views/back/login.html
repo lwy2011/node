@@ -45,7 +45,7 @@
             console.log(res.data);
             const {status, result, token} = res.data;
             if (status === 200) {
-                sessionStorage.setItem("user", token);
+                localStorage.setItem("user", token);
                 alert(result + "正在跳转，，，");
                 setTimeout(
                     () => {

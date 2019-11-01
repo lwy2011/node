@@ -58,11 +58,11 @@
 <script>
     const quit = document.querySelector(".quit");
     quit.onclick = () => {
-        if (!sessionStorage.user) return alert("请先登录！");
+        if (!localStorage.user) return alert("请先登录！");
         axios.get("/user/api/quit").then(
             res => {
                 if (res.status === 200) {
-                    sessionStorage.removeItem("user");
+                    localStorage.removeItem("user");
                     window.location.href = "/back/login";
                 } else {
                     console.log(res);

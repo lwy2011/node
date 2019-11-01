@@ -66,7 +66,7 @@
     };
 
     $(".btn").onclick = () => {
-        if (!sessionStorage.user)return alert("请先登录！账号已过期！") ;
+        if (!localStorage.user)return alert("请先登录！账号已过期！") ;
         const form = new FormData($("form"));
         const file = avatar.files[0];
         file && form.append("avatar",file);
@@ -74,7 +74,7 @@
             method:'post',
             contentType:false,
             data:form,
-            url:'/user/api/edit/'+sessionStorage.user
+            url:'/user/api/edit/'+localStorage.user
         }).then(res=>{
             console.log(res);
         })
@@ -83,11 +83,11 @@
     //退出逻辑
     const quit = document.querySelector(".quit");
     quit.onclick = () => {
-        if (!sessionStorage.user) return alert("请先登录！");
+        if (!localStorage.user) return alert("请先登录！");
         axios.get("/user/api/quit").then(
             res => {
                 if (res.status === 200) {
-                    sessionStorage.removeItem("user");
+                    localStorage.removeItem("user");
                     window.location.href = "/back/login";
                 } else {
                     console.log(res);
