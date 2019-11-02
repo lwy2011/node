@@ -12,6 +12,7 @@ import userApiRouter from "../router/user.edit.js";
 import session from "express-session";
 import login_pass from "../middle_wares/login_pass.js";
 import sourceRouter from "../router/source.js";
+import sourceApiRouter from "../router/source.api.js";
 
 const app = express();
 
@@ -76,7 +77,7 @@ app.use("/user/api", userApiRouter);
 //文章数据路由
 
 app.use("/back/source", sourceRouter);
-
+app.use("/source/api/", sourceApiRouter);
 //err中间键的添加
 
 app.use(errRouter);

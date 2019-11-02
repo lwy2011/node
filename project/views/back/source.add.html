@@ -34,8 +34,25 @@
         <input type="submit" value="提交">
     </label><br>
 </form>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="/back/release/wangEditor.min.js"></script>
 <script>
+    const uploadImg = (file, callback) => {
+        const form = new FormData();
+        form.append("img", file);
+        return axios({
+            method: "post",
+            data: form,
+            url: "/source/api/img_upload"
+        }).then(
+            res => {
+                console.log(res.data);
+                const {status,path} = res.data
+                status === 200 ? callback(path) : alert(res.data.message)
+            }
+        );
+    };
+    //富文本框的依赖地址：https://www.kancloud.cn/wangfupeng/wangeditor3/335782
     const E = window.wangEditor;
     const editor = new E(".editor");
     editor.customConfig.customUploadImg = function (files, insert) {
@@ -44,6 +61,9 @@
 
         // 上传代码返回结果之后，将图片插入到编辑器中
         // insert(imgUrl);
+        console.log(files);
+        const file = files[0];
+        uploadImg(file, insert);
     };
     editor.create();
 </script>
