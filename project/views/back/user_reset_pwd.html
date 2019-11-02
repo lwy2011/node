@@ -41,27 +41,39 @@
         const pwd2 = $(".pwd3").value;
         const key = $(".pwd2").getAttribute("data-key");
         if (!localStorage.user) return alert("请先登录，账号记录失效！");
-        console.log(11, oldPwd, pwd1, pwd2,key);
+        console.log(11, oldPwd, pwd1, pwd2, key);
         if (!oldPwd || !pwd1 || !pwd2) return alert("都要填的！");
         if (pwd1 !== pwd2) return alert("两次密码输入不正确！");
         axios(
             {
                 method: "post",
                 data: `new_pwd=${md5(pwd1 + key)}&old_pwd=${md5(oldPwd + key)}`,
-                url: "/user/api/reset_pwd/"+localStorage.user
+                url: "/user/api/reset_pwd/" + localStorage.user
             }
         ).then(
             res => {
-                console.log(res);
+                console.log(res.data);
+                if (res.data.status === 200) {
+                    axios.get("/user/api/quit").then(
+                        res => {
+                            if (res.data.status === 200) {
+                                localStorage.removeItem("user");
+                                window.location.href = "/back/login";
+                            }
+                        }
+                    );
+                } else {
+                    alert(res.data.message);
+                }
             }
         );
     };
 
-    $('form').onsubmit = ()=>{
+    $("form").onsubmit = () => {
         //这样是form表单的提交形式
 
         return false;
-    }
+    };
 </script>
 </body>
 </html>
