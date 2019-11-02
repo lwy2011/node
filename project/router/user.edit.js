@@ -81,6 +81,26 @@ router.post("/edit/:id", (req, res, next) => {
     });
 });
 
+router.post("/reset_pwd/:id", (req, res, next) => {
+    const {new_pwd, old_pwd} = req.body;
+    User.findById(req.params.id, (err, user) => {
+        console.log(req.params.id,old_pwd,new_pwd);
+        if (err) return next(err);
+        if (user.password !== old_pwd) return res.json({
+            status: 1, message: "原始密码输入错误！"
+        });
+        user.password = new_pwd;
+        user.save((e) => {
+            if (e) return next(e);
+            res.json({
+                status: 200,
+                message: "密码修改成功！"
+            });
+        });
+    });
+
+});
+
 router.get("/quit", (req, res, next) => {
     console.log("quit", req.session);
     // req.session.cookie.maxAge = 0;

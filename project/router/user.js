@@ -20,7 +20,7 @@ router.get("/back/user_center/:id", (req, res, next) => {
     });
 });
 router.get("/back/user_reset_pwd/:id", (req, res) => {
-    res.render("back/user_reset_pwd.html");
+    res.render("back/user_reset_pwd.html",{md5:configs.user_md5_key});
 });
 router.get("/back/user/edit/:id", (req, res, next) => {
     const {id} = req.params;

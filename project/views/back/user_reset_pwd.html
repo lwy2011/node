@@ -11,26 +11,51 @@
 <form action="/user/api/set_pwd/:id" method="post">
     <label>
         原密码:
-        <input type="text" name="password"  class="pwd1">
+        <input type="password" name="oldpwd" class="pwd1" required>
     </label>
     <br>
     <label>
         新密码:
-        <input type="text" name="password"  class="pwd2">
+        <input type="password" name="newpwd" class="pwd2" required data-key="{{md5}}">
     </label>
     <br>
 
 
     <label>
         请再次输入新密码 :
-        <input type="password" name="password" class="pwd3">
+        <input type="password" class="pwd3" required>
     </label>
     <br>
 
     <input type="button" value="提交" class="btn">
 </form>
-<script >
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/back/js/md5.js"></script>
+<script>
+    const $ = str => document.querySelector(str);
 
+
+    $(".btn").onclick = () => {
+        const oldPwd = $(".pwd1").value;
+        const pwd1 = $(".pwd2").value;
+        const pwd2 = $(".pwd3").value;
+        const key = $(".pwd2").getAttribute("data-key");
+        if (!localStorage.user) return alert("请先登录，账号记录失效！");
+        console.log(11, oldPwd, pwd1, pwd2,key);
+        if (!oldPwd || !pwd1 || !pwd2) return alert("都要填的！");
+        if (pwd1 !== pwd2) return alert("两次密码输入不正确！");
+        axios(
+            {
+                method: "post",
+                data: `new_pwd=${md5(pwd1 + key)}&old_pwd=${md5(oldPwd + key)}`,
+                url: "/user/api/reset_pwd/"+localStorage.user
+            }
+        ).then(
+            res => {
+                console.log(res);
+            }
+        );
+    };
 </script>
 </body>
 </html>
