@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>source add</title>
+</head>
+<body>
+<form action="/source/api/add" method="post" enctype="multipart/form-data">
+    <label>
+        文章标题：
+        <input type="text" name="title" required>
+    </label><br>
+    <label>
+        作者：
+        <input type="text" name="author" required>
+    </label><br>
+    <label>
+        缩略图：
+        <input type="file" name="img_url" required>
+    </label><br>
+    <label>
+        价格：
+        <input type="number" name="price" required>
+    </label><br>
+
+    <h4>文章内容：</h4>
+    <div class="editor">
+        <p>请输入内容，，，</p>
+    </div>
+    <label>
+        <input type="submit" value="提交">
+    </label><br>
+</form>
+<script src="/back/release/wangEditor.min.js"></script>
+<script>
+    const E = window.wangEditor;
+    const editor = new E(".editor");
+    editor.customConfig.customUploadImg = function (files, insert) {
+        // files 是 input 中选中的文件列表
+        // insert 是获取图片 url 后，插入到编辑器的方法
+
+        // 上传代码返回结果之后，将图片插入到编辑器中
+        // insert(imgUrl);
+    };
+    editor.create();
+</script>
+</body>
+</html>

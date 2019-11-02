@@ -11,6 +11,7 @@ import userRouter from "../router/user.js";
 import userApiRouter from "../router/user.edit.js";
 import session from "express-session";
 import login_pass from "../middle_wares/login_pass.js";
+import sourceRouter from "../router/source.js";
 
 const app = express();
 
@@ -21,7 +22,7 @@ const sessionStorage = require("connect-mongo")(session);
 
 app.use(session({
     name: "user_id",   //session ID cookie 的名字，自有默认值,浏览器端可看到  http://www.expressjs.com.cn/en/resources/middleware/session.html
-    cookie: {maxAge: 12 * 3600*1000},    //过期时间,ms为单位的！
+    cookie: {maxAge: 12 * 3600 * 1000},    //过期时间,ms为单位的！
     secret: "project",  //加密的字符串
     resave: false,              //强制每次请求都要重新更新cookie设置，重置过期时间
     saveUninitialized: true,            //强制储存未初始化的session，这时候session未设定属性或值。设定cookie前，有助于登录验证，权限控制，减轻服务器压力
@@ -31,7 +32,6 @@ app.use(session({
         touchAfter: 6 * 3600 // time period in seconds   监听并更新session的数据库的信息的触发时长
     })
 }));
-
 
 
 //静态文件的路由设置1
@@ -72,6 +72,10 @@ app.use(userRouter);
 
 app.use("/user/api", userApiRouter);
 
+
+//文章数据路由
+
+app.use("/back/source", sourceRouter);
 
 //err中间键的添加
 

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>sources</title>
+</head>
+<body>
+    <h4>Soureces</h4>
+    <table>
+        <thead>
+        <tr>
+            <td>序号</td>
+            <td>标题</td>
+            <td>作者</td>
+            <td>缩略图</td>
+            <td>是否收藏</td>
+            <td>价格</td>
+            <td>操作</td>
+            <td>
+                <a href="/back/source/add">去添加</a>
+            </td>
+        </tr>
+        </thead>
+        {% if(lists.length > 0)  %}
+        <tbody>
+            {% for list in lists %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{list.title}}</td>
+                <td>{{list.author}}</td>
+                <td>
+                    <a href="{{list.link}}">
+                        <img src="{{list.img_url}}" alt="img" style="width: 100px;">
+                    </a>
+                </td>
+                <td>{{list.is_store}}</td>
+                <td>{{list.price}}</td>
+                <td>
+                    <a href="/source/api/edit/{{list.id}}">编辑</a>
+                    <a href="/source/api/delete/{{list.id}}">删除</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {%else %}
+        <tr>
+            <td>
+                暂无资源，<a href="/back/source/add">去添加</a>
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+</body>
+</html>
