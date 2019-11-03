@@ -1,8 +1,9 @@
 import express from "express";
 import formidable from "formidable";
 import config from "../config";
-import {basename} from "path";
+import {basename, join} from "path";
 import Source from "../model/source.js";
+import fs from "fs";
 
 const router = express.Router();
 
@@ -80,6 +81,26 @@ router.post("/edit/:id", (req, res, next) => {
             });
         });
 
+    });
+});
+
+const fileRemove = path => {
+    fs.unlink(path, e => {
+        if (e) throw e;
+        console.log("delete " + path);
+    });
+};
+router.get("/delete/:id", (req, res, next) => {
+    Source.findById(req.params.id, (e,  data) => {
+        if (e) return next(e);
+        fileRemove(join(__dirname , "../public") + data.img_url);
+        data.remove((e1, docs) => {
+            if (e1) return next(e1);
+            res.json({
+                status: 200,
+                data: docs
+            });
+        });
     });
 });
 export default router;
