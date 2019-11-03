@@ -12,6 +12,12 @@ router.get("/", (req, res, next) => {
 router.get("/add", (req, res) => {
     res.render("back/source.add.html");
 });
+router.get("/edit/:id", (req, res, next) => {
+    Source.findById(req.params.id, (e, data) => {
+        if (e) return next(e);
+        res.render("back/source.edit.html",{data});
+    });
+});
 
 
 export default router;

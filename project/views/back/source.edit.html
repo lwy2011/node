@@ -5,30 +5,31 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>source add</title>
+    <title>source edit</title>
 </head>
 <body>
-<form action="/source/api/add" method="post" enctype="multipart/form-data">
+<form action="/source/api/edit/{{data.id}}" method="post" enctype="multipart/form-data">
     <label>
         文章标题：
-        <input type="text" name="title" required class="title">
+        <input type="text" name="title" required class="title" value="{{data.title}}" data-default="{{data.title}}">
     </label><br>
     <label>
         作者：
-        <input type="text" name="author" required class="author">
+        <input type="text" name="author" required class="author" value="{{data.author}}" data-default="{{data.author}}">
     </label><br>
-    <img src="" alt="img" class="img" style="width:200px;">
+    <img src="{{data.img_url}}" alt="img" class="img" style="width:200px;">
     <label>
         缩略图：
-        <input type="file" name="img_url" required class="img_url">
+        <input type="file" name="img_url" class="img_url">
     </label><br>
     <label>
         价格：
-        <input type="number" name="price" required class="price"> ( 元 )
+        <input type="number" name="price" required class="price" value="{{data.price}}" data-default="{{data.price}}"> (
+        元 )
     </label><br>
 
     <h4>文章内容：</h4>
-    <div class="editor">
+    <div class="editor" data-content="{{data.content}}">
         <p>请输入内容，，，</p>
     </div>
     <label>
@@ -38,6 +39,7 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="/back/release/wangEditor.min.js"></script>
 <script>
+
     const uploadImg = (file, callback) => {
         const form = new FormData();
         form.append("img", file);
@@ -67,7 +69,11 @@
         uploadImg(file, insert);
     };
     editor.create();
+
     const $ = str => document.querySelector(str);
+
+    const defaultContent = $(".editor").getAttribute("data-content");
+    editor.txt.html(defaultContent);
 
     const readFile = (imgDom, file) => {
         let data = "";
@@ -90,26 +96,33 @@
         const form = new FormData();
         const keys = ["title", "author", "price"];
         keys.map(
-            key => form.append(key, $("." + key).value)
+            key => {
+                const node = $("." + key);
+                const defaultVal = node.getAttribute("data-default");
+                const val = node.value;
+                val !== defaultVal &&
+                form.append(key, val);
+            }
         );
         const file = $(".img_url").files[0];
         file && form.append("img_url", file);
         const content = editor.txt.html();
         // console.log(content);
-        content && form.append("content", content);
         if (!content) {
             alert("文章内容不能为空！");
         }
         content &&
-        axios({
+        content !== defaultContent && form.append("content", content);
+
+        content && axios({
             method: "post",
             data: form,
-            url: "/source/api/add",
+            url: $('form').getAttribute('action'),
             contentType: false
         }).then(
             res => {
                 console.log(res.data);
-                res.data.status === 200 && alert('created success!!')
+                res.data.status === 200 && alert("edit success!!");
             }
         );
         return false;
