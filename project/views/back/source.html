@@ -6,6 +6,11 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>sources</title>
+    <style>
+        .active {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <h4>Soureces</h4>
@@ -53,6 +58,35 @@
     </tr>
     {% endif %}
 </table>
+<button disabled={{page-1<=0}} page={{page}}>
+    {% if (page - 1) > 0 %}
+    <a href="/back/source?count={{count}}&page={{page-1}}">
+        {% else %}
+        <a href="##">
+            {% endif %}
+            上一页
+        </a>
+</button>
+{% for i in range(0, totalPage) -%}
+<a href="/back/source?count={{count}}&page={{i+1}}">
+    {% if (i+1) === page %}
+    <button class="active">
+        {% else %}
+        <button>
+            {% endif %}
+            {{i+1}}
+        </button>
+</a>
+{%- endfor %}
+<button disabled={{page+1>=totalPage}}>
+    {% if (page + 1) <= totalPage %}
+    <a href="/back/source?count={{count}}&page={{page+1}}">
+        {% else %}
+        <a href="##">
+            {% endif %}
+            下一页
+        </a>
+</button>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     const btns = document.querySelectorAll(".btn");
@@ -73,7 +107,7 @@
                 }
             );
         }
-    )
+    );
 
 </script>
 </body>
