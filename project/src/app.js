@@ -13,6 +13,7 @@ import session from "express-session";
 import login_pass from "../middle_wares/login_pass.js";
 import sourceRouter from "../router/source.js";
 import sourceApiRouter from "../router/source.api.js";
+import sourceWebRouter from "../router/source.web.js";
 
 const app = express();
 
@@ -78,6 +79,7 @@ app.use("/user/api", userApiRouter);
 
 app.use("/back/source", sourceRouter);
 app.use("/source/api/", sourceApiRouter);
+app.use("/web/source", sourceWebRouter);
 //err中间键的添加
 
 app.use(errRouter);

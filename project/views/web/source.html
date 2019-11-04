@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>sources</title>
+    <style>
+        .active {
+            color: red;
+        }
+        .lists{
+            display:inline-flex;
+        }
+    </style>
+</head>
+<body>
+<h4>Soureces</h4>
+<p class="list_count">
+    总共有0个文章资源！！
+</p>
+<ul class="lists">
+
+</ul>
+<div class="btns">
+
+</div>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    let current = 1;
+    let lock,listCount;
+    let pageCount;
+    let pageSize = 2;
+    const $ = str => document.querySelector(str);
+
+
+
+
+
+    const btnBox = $(".btns");
+    const initBtns = (pageSize) => {
+
+
+        if (listCount) {
+            pageCount = Math.ceil(listCount / pageSize);
+            console.log(pageCount, "yeshu", current);
+            let html = "";
+            for (let i = current - 2 >= 0 ? current - 2 : 0; i < (current + 2 > pageCount ? pageCount : current + 2); i++) {
+                html += `
+                            ${
+                    current === i + 1 ?
+                        "<button class=\"btn active\" disabled>" :
+                        "<button class=\"btn\" >"
+                    }
+                             ${i + 1}</button>
+                        `;
+            }
+            btnBox.innerHTML = `
+                        ${
+                current === 1 ?
+                    "<button class=\"btn first\" disabled>" :
+                    "<button class=\"btn first\" >"
+                }
+
+                            首页
+                     </button>
+                     ${
+                current === 1 ?
+                    "<button class=\"btn last\" disabled>" :
+                    "<button class=\"btn last\" >"
+                }
+                                上一页
+                            </button>
+                    ` + html + `
+                    ${
+                current === pageCount ?
+                    "<button class=\"btn next\" disabled>" :
+                    "<button class=\"btn next\" >"
+                }
+                                            下一页
+                                            </button>
+                                           ${
+                current === pageCount ?
+                    "<button class=\"btn end\" disabled>" :
+                    "<button class=\"btn end\" >"
+                }
+                                        尾页
+                                        </button>
+                    `;
+        }
+
+    };
+
+    const initEvents = () => {
+        const btns = document.querySelectorAll(".btn");
+        console.log(btns);
+        btns.forEach(
+            btn => btn.onclick = () => {
+                console.log(1);
+                if (lock) return;
+                lock = true;
+
+                if (btn.classList.contains("first")) {
+                    current = 1;
+                    initBtns(pageSize);
+                } else if (btn.classList.contains("last")) {
+                    current -= 1;
+                    initBtns(pageSize);
+                } else if (btn.classList.contains("next")) {
+                    current += 1;
+                    initBtns(pageSize);
+                } else if (btn.classList.contains("end")) {
+                    current = pageCount;
+                    initBtns(pageSize);
+                } else {
+                    current = +btn.innerText;
+                    initBtns(pageSize);
+                }
+
+                ajax(pageSize, current).then(
+                    () => {
+                        lock = false;
+                    }
+                );
+            }
+        );
+    };
+
+    const ajax = (count, page,sortBy = 'price') => axios({
+        url: `/web/source/lazy`,
+        method: "get",
+        params:{
+            count,page,
+            sortBy
+        }
+    }).then(
+        res => {
+            console.log(res);
+            if (res.data && res.data.status === 200) {
+                $(".lists").innerHTML = listsDom(res.data.lists);
+            }
+        }
+    ).then(
+        () => {
+            setTimeout(
+                () => {initEvents();}, 500
+            );
+        }
+    );
+
+
+    const listsDom = lists => {
+        let html = "";
+        lists.map(
+            (list, index) => html +=
+                `
+                    <li class="list">
+                        <a href=${list.link}>
+                            <img src=${list.img_url} alt="img" style="width:200px;">
+                        </a>
+                        <p>
+                            ${list.title}
+                        </p>
+                        <p style="textAlign:right;">
+                            <span>
+                            ￥ ${list.price}
+                            </span>
+                        </p>
+                    </li>
+                `
+        );
+        return html;
+    };
+
+
+    //初始化
+
+    (
+        () => {
+            axios.get("/web/source/count").then(
+                res => {
+                    if (res.data.status === 200) {
+                        listCount = res.data.count;
+                        $(".list_count").innerText = `共有${listCount}个资源！`;
+                        initBtns(pageSize)
+                    }
+                }
+            );
+        }
+    )();
+    ajax(pageSize, current);
+
+
+</script>
+</body>
+</html>
