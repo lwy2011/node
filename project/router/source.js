@@ -43,5 +43,26 @@ router.get("/", (req, res) => {
         }
     );
 });
+router.get("/lazy", (req, res) => {
+    let {count, page} = req.query;
+    count = +req.query.count || 2;
+    page = +req.query.page || 1;
+    Source.find().skip((page - 1) * count).limit(count).exec(
+        (e, lists) => {
+            if (e) return e;
+            res.json(
+                {
+                    lists,
+                    status:200
+                }
+            );
+
+        }
+    );
+});
+router.get("/list", (req, res) => {
+    res.render('back/source1.html')
+});
+
 
 export default router;

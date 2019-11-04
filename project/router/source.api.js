@@ -91,15 +91,26 @@ const fileRemove = path => {
     });
 };
 router.get("/delete/:id", (req, res, next) => {
-    Source.findById(req.params.id, (e,  data) => {
+    Source.findById(req.params.id, (e, data) => {
         if (e) return next(e);
-        fileRemove(join(__dirname , "../public") + data.img_url);
+        fileRemove(join(__dirname, "../public") + data.img_url);
         data.remove((e1, docs) => {
             if (e1) return next(e1);
             res.json({
                 status: 200,
                 data: docs
             });
+        });
+    });
+});
+
+
+router.get("/count", (req, res, next) => {
+    Source.countDocuments((e, count) => {
+        if (e) return next(e);
+        res.json({
+            status: 200,
+            count
         });
     });
 });
