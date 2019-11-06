@@ -10,8 +10,9 @@
         .active {
             color: red;
         }
-        .lists{
-            display:inline-flex;
+
+        .lists {
+            display: inline-flex;
         }
     </style>
 </head>
@@ -20,6 +21,11 @@
 <p class="list_count">
     总共有0个文章资源！！
 </p>
+<div class="sort">
+    <span>排序;</span>
+    <button class="price">价格</button>
+    <button class="read_count">阅读量</button>
+</div>
 <ul class="lists">
 
 </ul>
@@ -30,13 +36,11 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     let current = 1;
-    let lock,listCount;
+    let lock, listCount;
     let pageCount;
     let pageSize = 2;
+    let sortBy = "price";
     const $ = str => document.querySelector(str);
-
-
-
 
 
     const btnBox = $(".btns");
@@ -119,7 +123,7 @@
                     initBtns(pageSize);
                 }
 
-                ajax(pageSize, current).then(
+                ajax(pageSize, current ,sortBy).then(
                     () => {
                         lock = false;
                     }
@@ -128,11 +132,11 @@
         );
     };
 
-    const ajax = (count, page,sortBy = 'price') => axios({
+    const ajax = (count, page, sortBy = "price") => axios({
         url: `/web/source/lazy`,
         method: "get",
-        params:{
-            count,page,
+        params: {
+            count, page,
             sortBy
         }
     }).then(
@@ -184,7 +188,7 @@
                     if (res.data.status === 200) {
                         listCount = res.data.count;
                         $(".list_count").innerText = `共有${listCount}个资源！`;
-                        initBtns(pageSize)
+                        initBtns(pageSize);
                     }
                 }
             );
@@ -192,6 +196,15 @@
     )();
     ajax(pageSize, current);
 
+    document.querySelector(".sort").onclick = e => {
+        const node = e.target;
+        console.log(node);
+        console.log(node.classList[0]);
+        sortBy = node.classList[0]
+
+        //这里保险的是用.contains('**')做判断。但是我这里设计定死了它 的class，所以可以如此。
+        ajax(pageSize, current, sortBy);
+    };
 
 </script>
 </body>
