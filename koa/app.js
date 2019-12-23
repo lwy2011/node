@@ -1,8 +1,8 @@
 import Koa from "koa";
 import Router from "koa-router";
 
-import classic from './router/v1/classic.js'
-import book from './router/v1/book.js'
+
+import requireDirectory from "require-directory";
 
 const app = new Koa();
 
@@ -106,16 +106,30 @@ const app = new Koa();
 
 
 //koa-router:
-const router = new Router();
-router.get("/", (ctx, next) => {
-    ctx.body = {res:'hahha'}
-});
+// const router = new Router();
+// router.get("/", (ctx, next) => {
+//     ctx.body = {res:'hahha'}
+// });
 
 
-app.use(router.routes());
-app.use(classic.routes());
-app.use(book.routes());
+//requireDirectory用法
+const whenLoadModule = val => {
+    // console.log(val);
+    for (var key in val){
+        val[key] instanceof Router && app.use(val[key].routes())
+    }
+};
 
+
+requireDirectory(
+    module, "./router",
+    {visit: whenLoadModule}
+);
+
+
+// app.use(router.routes());
+// app.use(classic.routes());
+// app.use(book.routes());
 
 
 app.listen(3000);

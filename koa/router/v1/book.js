@@ -1,7 +1,10 @@
-import router from "../index";
+import Router from "koa-router";
 
 
-router.get("/book", (ctx) => {
+const router = new Router();
+
+
+router.get("/v1/book", (ctx) => {
     ctx.body = {src: "book"};
 });
 
