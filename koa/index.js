@@ -1,4 +1,5 @@
 //koa 学习！
-require("babel-register");
-require("./app.js");
 
+require('babel-polyfill');
+require('babel-register');
+require('./app.js');

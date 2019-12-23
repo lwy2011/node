@@ -4,13 +4,17 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "start": "nodemon index.js"
+        "start": "nodemon  index.js",
+        "build": "babel src -d dist"
     },
     "dependencies": {
+        "babel-polyfill": "^6.26.0",
         "koa": "^2.11.0"
     },
     "devDependencies": {
+        "babel-cli": "^6.26.0",
         "babel-preset-env": "^1.7.0",
+        "babel-preset-stage-0": "^6.24.1",
         "babel-register": "^6.26.0"
     }
 }
