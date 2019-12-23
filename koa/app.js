@@ -1,6 +1,9 @@
 import Koa from "koa";
 import Router from "koa-router";
 
+import classic from './router/v1/classic.js'
+import book from './router/v1/book.js'
+
 const app = new Koa();
 
 //洋葱模型演示：
@@ -110,5 +113,9 @@ router.get("/", (ctx, next) => {
 
 
 app.use(router.routes());
+app.use(classic.routes());
+app.use(book.routes());
+
+
 
 app.listen(3000);
