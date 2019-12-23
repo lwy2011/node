@@ -9,7 +9,8 @@
     },
     "dependencies": {
         "babel-polyfill": "^6.26.0",
-        "koa": "^2.11.0"
+        "koa": "^2.11.0",
+        "koa-router": "^7.4.0"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
