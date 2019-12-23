@@ -1,8 +1,10 @@
 import Koa from "koa";
-import Router from "koa-router";
+import InitManager from "./core/init";
+// import Router from "koa-router";
+//
+//
+// import requireDirectory from "require-directory";
 
-
-import requireDirectory from "require-directory";
 
 const app = new Koa();
 
@@ -113,23 +115,25 @@ const app = new Koa();
 
 
 //requireDirectory用法
-const whenLoadModule = val => {
-    // console.log(val);
-    for (var key in val){
-        val[key] instanceof Router && app.use(val[key].routes())
-    }
-};
-
-
-requireDirectory(
-    module, "./router",
-    {visit: whenLoadModule}
-);
+// const whenLoadModule = val => {
+//     // console.log(val);
+//     for (var key in val){
+//         val[key] instanceof Router && app.use(val[key].routes())
+//     }
+// };
+//
+//
+// requireDirectory(
+//     module, "./router",
+//     {visit: whenLoadModule}
+// );
 
 
 // app.use(router.routes());
 // app.use(classic.routes());
 // app.use(book.routes());
 
+
+InitManager.init(app);
 
 app.listen(3000);
