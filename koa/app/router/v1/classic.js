@@ -17,9 +17,18 @@ latest.post("/v1/:id/classic/latest", (ctx, next) => {
     const {params} = ctx;
     //body 参数需要 koa-bodyparser中间键来合成的！
     const {query, header, body} = ctx.request;   //对应：路由传参，？传参，header传参
+
     console.log(params, query, header, body);
+
+    if (true) {
+        const error = new Error("error!");
+        error.error_code = 10001;
+        error.message = "上传的数据有问题！";
+        error.status = 400;
+        error.request_url = ctx.method + " " + ctx.path;
+        throw error;
+    }
     ctx.body = {params, query, header, body};
-    throw new Error("333");
 });
 export default router;
 export {latest};
