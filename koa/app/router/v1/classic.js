@@ -1,4 +1,5 @@
 import Router from "koa-router";
+import HttpException from "../../../core/http-exception";
 
 const router = new Router();
 
@@ -18,17 +19,14 @@ latest.post("/v1/:id/classic/latest", (ctx, next) => {
     //body 参数需要 koa-bodyparser中间键来合成的！
     const {query, header, body} = ctx.request;   //对应：路由传参，？传参，header传参
 
-    console.log(params, query, header, body);
+    // console.log(params, query, header, body);
+
 
     if (true) {
-        const error = new Error("error!");
-        error.error_code = 10001;
-        error.message = "上传的数据有问题！";
-        error.status = 400;
-        error.request_url = ctx.method + " " + ctx.path;
-        throw error;
+        throw new HttpException("上传的数据有问题！", 10001, 400)
+    } else {
+        ctx.body = {params, query, header, body};
     }
-    ctx.body = {params, query, header, body};
 });
 export default router;
 export {latest};
