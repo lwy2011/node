@@ -6,7 +6,7 @@ import {join} from 'path'
 
 //router目录变量化
 
-
+// process.cwd()绝对路径的方法
 
 export default class InitManager {
     static init(app){

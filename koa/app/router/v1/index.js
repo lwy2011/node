@@ -9,6 +9,9 @@
 // 开闭原则：尽量不修改，尽量扩展代码！
 
 
+
+//传参：路径传参 :id  ，？后面传参，body传参，header传参
+
 import Router from "koa-router";
 
 

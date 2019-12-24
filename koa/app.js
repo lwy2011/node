@@ -1,5 +1,7 @@
 import Koa from "koa";
 import InitManager from "./core/init";
+import parser from "koa-bodyparser";
+
 // import Router from "koa-router";
 //
 //
@@ -7,6 +9,9 @@ import InitManager from "./core/init";
 
 
 const app = new Koa();
+
+
+app.use(parser());   //构建请求的body的数据，以便于在请求的body处拿到
 
 //洋葱模型演示：
 // app.use((ctx, next) => {
