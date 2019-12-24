@@ -18,7 +18,8 @@ latest.post("/v1/:id/classic/latest", (ctx, next) => {
     //body 参数需要 koa-bodyparser中间键来合成的！
     const {query, header, body} = ctx.request;   //对应：路由传参，？传参，header传参
     console.log(params, query, header, body);
-    ctx.body = {params,query,header,body}
+    ctx.body = {params, query, header, body};
+    throw new Error("333");
 });
 export default router;
 export {latest};
