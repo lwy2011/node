@@ -10,13 +10,19 @@ const catch_error = async (ctx, next) => {
         // error_code 详细，开发者自定义 100001  100002
         // request_url 当前的请求url
         // console.log(error.__proto__,error instanceof ParameterException ,HttpException);
+        const request_url = ctx.method + " " + ctx.path;
+
         if (error.code) {
             // 已知错误！
             const {msg, status, code} = error;
-            ctx.body = {msg, code, request_url: ctx.method + " " + ctx.path};
+            ctx.body = {msg, error_code:code, request_url};
             ctx.status = status;
         } else {
-            ctx.body = "出现未知错误，请稍等，，，";
+            ctx.body = {
+                msg: "we made a mistake (。・＿・。)ﾉI’m sorry~",
+                error_code: 999,
+                request_url
+            };
         }
 
         // 已知错误   破坏自己定制的规则，比如传参传错了，明确的可判断，人为抛出异常

@@ -16,6 +16,14 @@ class ParameterException extends HttpException {
         this.status = 400;
     }
 }
+class NotFound extends HttpException {
+    constructor(msg,code) {
+        super();
+        this.msg = msg || "请求路径错误，或资源未找到！";
+        this.code = code || 10002;
+        this.status = 404;
+    }
+}
 
 export default HttpException;
-export {ParameterException}
+export {ParameterException,NotFound}

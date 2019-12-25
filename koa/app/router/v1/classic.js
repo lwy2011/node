@@ -21,8 +21,9 @@ latest.post("/v1/:id/classic/latest", (ctx, next) => {
 
     // console.log(params, query, header, body);
 
-
+    abc
     if (true) {
+
         throw new ParameterException()
     } else {
         ctx.body = {params, query, header, body};
