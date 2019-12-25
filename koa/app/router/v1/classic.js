@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import HttpException from "../../../core/http-exception";
+import  {ParameterException} from "../../../core/http-exception";
 
 const router = new Router();
 
@@ -23,7 +23,7 @@ latest.post("/v1/:id/classic/latest", (ctx, next) => {
 
 
     if (true) {
-        throw new HttpException("上传的数据有问题！", 10001, 400)
+        throw new ParameterException()
     } else {
         ctx.body = {params, query, header, body};
     }

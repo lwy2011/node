@@ -7,6 +7,15 @@ class HttpException extends Error {
     }
 }
 
-export default HttpException;
 
-// module.exports = {HttpException};
+class ParameterException extends HttpException {
+    constructor(msg,code) {
+        super();
+        this.msg = msg || "参数错误！";
+        this.code = code || 10001;
+        this.status = 400;
+    }
+}
+
+export default HttpException;
+export {ParameterException}

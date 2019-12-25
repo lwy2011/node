@@ -1,4 +1,4 @@
-import HttpException from "../core/http-exception";
+// import HttpException, {ParameterException} from "../core/http-exception";
 const catch_error = async (ctx, next) => {
     try {
         await next();    //因为try只能拿到同步的错误，用async可以造成阻塞，同步的理念。
@@ -9,7 +9,7 @@ const catch_error = async (ctx, next) => {
         //message
         // error_code 详细，开发者自定义 100001  100002
         // request_url 当前的请求url
-        // console.log(error.__proto__,error instanceof HttpException ,HttpException);
+        // console.log(error.__proto__,error instanceof ParameterException ,HttpException);
         if (error.code) {
             // 已知错误！
             const {msg, status, code} = error;
