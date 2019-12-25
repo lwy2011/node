@@ -1,4 +1,5 @@
 // import HttpException, {ParameterException} from "../core/http-exception";
+
 const catch_error = async (ctx, next) => {
     try {
         await next();    //因为try只能拿到同步的错误，用async可以造成阻塞，同步的理念。
@@ -10,12 +11,20 @@ const catch_error = async (ctx, next) => {
         // error_code 详细，开发者自定义 100001  100002
         // request_url 当前的请求url
         // console.log(error.__proto__,error instanceof ParameterException ,HttpException);
+
+
+        //开发环境需要捕获异常错误，所以要抛出错误：
+
+        if (global.config.environment === "dev") {
+            throw error;
+        }
+
         const request_url = ctx.method + " " + ctx.path;
 
         if (error.code) {
             // 已知错误！
             const {msg, status, code} = error;
-            ctx.body = {msg, error_code:code, request_url};
+            ctx.body = {msg, error_code: code, request_url};
             ctx.status = status;
         } else {
             ctx.body = {
