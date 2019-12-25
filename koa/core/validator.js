@@ -29,16 +29,16 @@ class Validator {
         };
     }
 
-    get(path, parsed = true) {
-        if (parsed) {
+    get(path, parsed = true) {              //获取请求的数据的信息
+        if (parsed) {                           //源数据被处理过的新数据
             const value = get(this.parsed, path, null);
-            if (value == null) {
+            if (value === null) {
                 const keys = path.split(".");
                 const key = last(keys);
                 return get(this.parsed.default, key);
             }
             return value;
-        } else {
+        } else {                            //源数据
             return get(this.data, path);
         }
     }
@@ -127,7 +127,7 @@ class Validator {
         };
     }
 
-    _findParam(key) {
+    _findParam(key) {          //查询参数数据方法
         let value;
         value = get(this.data, ["query", key]);
         if (value) {

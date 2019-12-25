@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import {ParameterException} from "../../../core/http-exception";
+// import {ParameterException} from "../../../core/http-exception";
 import PositiveIntegerValidator from "../../validators/ index";
 
 const router = new Router();
@@ -24,7 +24,8 @@ latest.post("/v1/:id/classic/latest", (ctx, next) => {
 
     const v = new PositiveIntegerValidator();
     v.validate(ctx);
-    console.log(v);
+    const id = v.get("path.id");
+    console.log( id);
     // if (true) {
     //     throw new ParameterException()
     // } else {
