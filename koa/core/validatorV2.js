@@ -6,12 +6,8 @@ import {
     set,
     cloneDeep
 } from "lodash";
-
 import {findMembers} from "./util";
 import {ParameterException} from "./http-exception";
-
-
-//检验器的最初版本
 
 
 class Validator {
@@ -20,7 +16,8 @@ class Validator {
         this.parsed = {};
     }
 
-    static _assembleAllParams(ctx) {                //拿到数据的方法！
+
+    _assembleAllParams(ctx) {
         return {
             body: ctx.request.body,
             query: ctx.request.query,
@@ -29,21 +26,21 @@ class Validator {
         };
     }
 
-    get(path, parsed = true) {              //获取请求的数据的信息
-        if (parsed) {                           //源数据被处理过的新数据
+    get(path, parsed = true) {
+        if (parsed) {
             const value = get(this.parsed, path, null);
-            if (value === null) {
+            if (value == null) {
                 const keys = path.split(".");
                 const key = last(keys);
                 return get(this.parsed.default, key);
             }
             return value;
-        } else {                            //源数据
+        } else {
             return get(this.data, path);
         }
     }
 
-    _findMembersFilter(key) {                       //筛选校验的key了
+    _findMembersFilter(key) {
         if (/validate([A-Z])\w+/g.test(key)) {
             return true;
         }
@@ -59,37 +56,37 @@ class Validator {
         return false;
     }
 
-    validate(ctx, alias = {}) {                             //验证步骤
+    async validate(ctx, alias = {}) {
         this.alias = alias;
-        let params = Validator._assembleAllParams(ctx);   //1拿到数据
+        let params = this._assembleAllParams(ctx);
         this.data = cloneDeep(params);
         this.parsed = cloneDeep(params);
 
-        const memberKeys = findMembers(this, {                //2 拿到校验的key们
+        const memberKeys = findMembers(this, {
             filter: this._findMembersFilter.bind(this)
         });
 
         const errorMsgs = [];
         // const map = new Map(memberKeys)
-        for (let key of memberKeys) {                           //3开始校验
-            const result = this._check(key, alias);
+        for (let key of memberKeys) {
+            const result = await this._check(key, alias);
             if (!result.success) {
                 errorMsgs.push(result.msg);
             }
         }
-        if (errorMsgs.length !== 0) {                           //4判断结果
+        if (errorMsgs.length !== 0) {
             throw new ParameterException(errorMsgs);
         }
         ctx.v = this;
-        return this;                                            //5 结果储存在ctx.v 中，然后 返回自身
+        return this;
     }
 
-    _check(key, alias = {}) {
+    async _check(key, alias = {}) {
         const isCustomFunc = typeof (this[key]) === "function";
         let result;
         if (isCustomFunc) {
             try {
-                this[key](this.data);
+                await this[key](this.data);
                 result = new RuleResult(true);
             } catch (error) {
                 result = new RuleResult(false, error.msg || error.message || "参数错误");
@@ -127,7 +124,7 @@ class Validator {
         };
     }
 
-    _findParam(key) {          //查询参数数据方法
+    _findParam(key) {
         let value;
         value = get(this.data, ["query", key]);
         if (value) {
@@ -190,7 +187,7 @@ class Rule {
     }
 
     validate(field) {
-        if (this.name === "optional")
+        if (this.name === "isOptional")
             return new RuleResult(true);
         if (!validator[this.name](field + "", ...this.params)) {
             return new RuleResult(false, this.msg || this.message || "参数错误");
@@ -246,7 +243,7 @@ class RuleField {
 
     _allowEmpty() {
         for (let rule of this.rules) {
-            if (rule.name === "optional") {
+            if (rule.name === "isOptional") {
                 return true;
             }
         }
@@ -256,7 +253,7 @@ class RuleField {
     _hasDefault() {
         for (let rule of this.rules) {
             const defaultValue = rule.params[0];
-            if (rule.name === "optional") {
+            if (rule.name === "isOptional") {
                 return defaultValue;
             }
         }
@@ -264,7 +261,7 @@ class RuleField {
 }
 
 
-// export {
-//     Rule,
-//     Validator
-// };
+module.exports = {
+    Rule,
+    Validator
+};

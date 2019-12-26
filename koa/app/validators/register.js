@@ -1,4 +1,5 @@
-import {Validator, Rule} from "../../core/validator";
+import {Validator, Rule} from "../../core/validatorV2";
+import User from "../model/user";
 
 
 class RegisterValidator extends Validator {
@@ -24,11 +25,22 @@ class RegisterValidator extends Validator {
         this.password2 = this.password1;
     }
 
-    validatePassword(vals) {   //自定义校验方法，方法名以validate开头就可以的。
+    async validatePassword(vals) {   //自定义校验方法，方法名以validate开头就可以的。
         const pwd1 = vals.body.password1;
         const pwd2 = vals.body.password2;
         if (pwd2 !== pwd1) {
             throw new Error("两次输入的密码不相同！");
+        }
+    }
+
+    async validateEmail(vals) {
+        const eml = vals.body.email;
+        const user = await User.findOne({
+            where:{email: eml}
+        });
+        console.log(user,555);
+        if (user) {
+            throw new Error("邮箱已存在！");
         }
     }
 }

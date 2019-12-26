@@ -15,14 +15,14 @@ latest.get("/v1/classic/latest", ctx => {
 });
 
 //传参练习：
-latest.post("/v1/:id/classic/latest", (ctx, next) => {
+latest.post("/v1/:id/classic/latest", async (ctx, next) => {
     const {params} = ctx;
     //body 参数需要 koa-bodyparser中间键来合成的！
     const {query, header, body} = ctx.request;   //对应：路由传参，？传参，header传参
 
     // console.log(params, query, header, body);
 
-    const v = new PositiveIntegerValidator();
+    const v = await new PositiveIntegerValidator();
     v.validate(ctx);
     const id = v.get("path.id");
     console.log( id);

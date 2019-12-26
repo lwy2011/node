@@ -1,4 +1,4 @@
-import {Validator, Rule} from "../../core/validator";
+import {Validator, Rule} from "../../core/validatorV2";
 
 
 class PositiveIntegerValidator extends Validator {  //正整数校验
