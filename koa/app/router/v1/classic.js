@@ -1,6 +1,6 @@
 import Router from "koa-router";
 // import {ParameterException} from "../../../core/http-exception";
-import PositiveIntegerValidator from "../../validators/ index";
+import PositiveIntegerValidator from "../../validators/positiveInteger";
 
 const router = new Router();
 
