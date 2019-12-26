@@ -15,7 +15,7 @@ const catch_error = async (ctx, next) => {
 
         //开发环境需要捕获异常错误，所以要抛出错误：
 
-        if (global.config.environment === "dev") {
+        if (global.config.environment === "dev" && !error.code) {
             throw error;
         }
 
