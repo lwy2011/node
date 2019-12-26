@@ -20,7 +20,7 @@ User.init({
         type: Sequelize.STRING(64),
         unique: true
     }
-},{sequelize});
+},{sequelize,tableName:'user'});  //不要首字母大写，不要复数
 
 
 export default User;
