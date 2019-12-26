@@ -2,6 +2,8 @@ import Koa from "koa";
 import InitManager from "./core/init";
 import parser from "koa-bodyparser";
 import catch_error from "./middlewares/catch-error";
+import User from "./app/model/user";
+
 
 // import Router from "koa-router";
 //
@@ -143,5 +145,6 @@ app.use(parser());   //构建请求的body的数据，以便于在请求的body�
 
 
 InitManager.init(app);
+
 
 app.listen(3000);

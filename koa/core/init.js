@@ -4,6 +4,7 @@ import requireDirectory from "require-directory";
 import {join} from "path";
 import config from "../config.js";
 
+
 //router目录变量化
 
 // process.cwd()绝对路径的方法
@@ -17,7 +18,7 @@ export default class InitManager {
     static initLoadRouters(app) {
         const whenLoadModule = val => {
             // console.log(val);
-            for (var key in val) {
+            for (let key in val) {
                 val[key] instanceof Router && app.use(val[key].routes());
             }
         };
