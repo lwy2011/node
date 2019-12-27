@@ -7,17 +7,18 @@ class HttpException extends Error {
     }
 }
 
-
+//code一定要从1开始，因为后续判断，对code判断，是否是主动抛出错误还是自动生成的错误。
 class ParameterException extends HttpException {
-    constructor(msg,code) {
+    constructor(msg, code) {
         super();
         this.msg = msg || "参数错误！";
         this.code = code || 10001;
         this.status = 400;
     }
 }
+
 class NotFound extends HttpException {
-    constructor(msg,code) {
+    constructor(msg, code) {
         super();
         this.msg = msg || "请求路径错误，或资源未找到！";
         this.code = code || 10002;
@@ -25,5 +26,14 @@ class NotFound extends HttpException {
     }
 }
 
+class Success extends HttpException {
+    constructor(msg = "操作成功！", code = 1) {
+        super();
+        this.msg = msg;
+        this.code = code;
+        this.status = 201;
+    }
+}
+
 export default HttpException;
-export {ParameterException,NotFound}
+export {ParameterException, NotFound,Success};

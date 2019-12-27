@@ -1,6 +1,7 @@
 import Router from "koa-router";
 import RegisterValidator from "../../validators/register";
 import User from "../../model/user";
+import {Success} from "../../../core/http-exception";
 
 const router = new Router({
     prefix: "/v1/user"
@@ -23,7 +24,7 @@ router.post("/register", async (ctx) => {
     };
     await User.create(user);
     // console.log(12, User);
-
+    throw new Success();
 
 });
 
