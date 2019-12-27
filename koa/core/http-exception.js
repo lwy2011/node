@@ -25,6 +25,14 @@ class NotFound extends HttpException {
         this.status = 404;
     }
 }
+class AuthFailed extends HttpException {
+    constructor(msg, code) {
+        super();
+        this.msg = msg || "您没有权限！";
+        this.code = code || 10003;
+        this.status = 401;
+    }
+}
 
 class Success extends HttpException {
     constructor(msg = "操作成功！", code = 1) {
@@ -36,4 +44,4 @@ class Success extends HttpException {
 }
 
 export default HttpException;
-export {ParameterException, NotFound,Success};
+export {ParameterException, NotFound,Success,AuthFailed};
