@@ -1,5 +1,4 @@
 import Router from "koa-router";
-import bcrypt from "bcrypt";
 import RegisterValidator from "../../validators/register";
 import User from "../../model/user";
 
@@ -15,11 +14,11 @@ router.post("/register", async (ctx) => {
     //nickname password1  password2  email
 
     const v = await new RegisterValidator().validate(ctx);
-    const salt = bcrypt.genSaltSync(10);   //10是计算的成本复杂设置数，一般般就可以了
-    const pwd = bcrypt.hashSync(v.get("body.password1"),salt);
+    // const salt = bcrypt.genSaltSync(10);   //10是计算的成本复杂设置数，一般般就可以了
+    // const pwd = bcrypt.hashSync(v.get("body.password1"),salt);
     const user = {
         nickname: v.get("body.nickname"),
-        password: pwd,
+        password: v.get("body.password1"),
         email: v.get("body.email")
     };
     await User.create(user);
