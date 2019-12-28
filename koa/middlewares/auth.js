@@ -4,8 +4,10 @@ import config from "../config";
 import {Forbbiden} from "../core/http-exception";
 
 class Auth {
-    constructor() {
-
+    constructor(leval) {
+        this.leval = leval;   //路由的权限
+        Auth.USER = 8;             //user的权限
+        Auth.ADMAIN = 16;    //管理员的权限
     }
 
     get token() {
@@ -37,6 +39,9 @@ class Auth {
                     msg = "token已过期！";
                 }
                 throw new Forbbiden(msg);
+            }
+            if (decoded.scope < this.leval) {
+                throw new Forbbiden("您没有权限进行操作！",10003,401);
             }
             ctx.auth = {
                 uid: decoded.uid,

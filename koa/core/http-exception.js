@@ -44,11 +44,11 @@ class Success extends HttpException {
 }
 
 class Forbbiden extends HttpException {
-    constructor(msg, code) {
+    constructor(msg, code,status = 403) {
         super();
         this.msg = msg || "token错误！";
         this.code = code || 10004;
-        this.status = 403;
+        this.status = status;
     }
 }
 export default HttpException;
