@@ -39,15 +39,20 @@ const findMembers = function (instance, {
     return _find(instance);
 };
 
+
+//生成token的方法！
 const generateToken = function (uid, scope) {
-    const secretKey = global.config.security.secretKey;
-    const expiresIn = global.config.security.expiresIn;
-    const token = jwt.sign({
-        uid,
-        scope
-    }, secretKey, {
-        expiresIn
-    });
+    const secretKey = global.config.security.secretKey;  //随机字符串做私有钥匙
+    const expiresIn = global.config.security.expiresIn;  //过期时间，分钟做单位
+    const token = jwt.sign(
+        {                //写入的信息数据
+            uid,
+            scope
+        },
+        secretKey,    //私钥
+        {              //其他的配置参数
+            expiresIn
+        });
     return token;
 };
 

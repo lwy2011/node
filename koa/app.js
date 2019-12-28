@@ -2,7 +2,6 @@ import Koa from "koa";
 import InitManager from "./core/init";
 import parser from "koa-bodyparser";
 import catch_error from "./middlewares/catch-error";
-import User from "./app/model/user";
 
 
 // import Router from "koa-router";
