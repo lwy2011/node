@@ -6,6 +6,10 @@ const config = {
         password:'kk201101',
         host:'localhost',
         port:3306
+    },
+    security:{
+        secretKey:'sjf$nweis2331mk',
+        expiresIn:60*60  //单位为分钟，jsonwebtoken的生态
     }
 };
 

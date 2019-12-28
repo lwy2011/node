@@ -18,6 +18,7 @@ class User extends Model {
         if (!test) {
             throw new AuthFailed("密码错误！");
         }
+        return user;
     }
 }
 
