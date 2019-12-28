@@ -39,6 +39,7 @@ const router = new Router({
 //测试前端发送token过来，验证token：
 router.get("/latest", new Auth().token,async (ctx, next) => {
     //
+    ctx.body = ctx.auth
 });
 export default router;
 // export {latest};

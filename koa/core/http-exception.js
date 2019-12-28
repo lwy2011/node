@@ -43,5 +43,13 @@ class Success extends HttpException {
     }
 }
 
+class Forbbiden extends HttpException {
+    constructor(msg, code) {
+        super();
+        this.msg = msg || "token错误！";
+        this.code = code || 10004;
+        this.status = 403;
+    }
+}
 export default HttpException;
-export {ParameterException, NotFound,Success,AuthFailed};
+export {ParameterException, NotFound,Success,AuthFailed,Forbbiden};
