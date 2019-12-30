@@ -16,6 +16,11 @@ const emailLogin = async (account, password) =>
     await User.verifyEmailPassword(account, password);
 
 
+//业务逻辑
+// 写在 API model 层 ，最好放model层，业务分层！api不写业务逻辑！
+//业务分层：model 里，如果很复杂：就分 model service logic等层！
+//细化业务逻辑，分开更多层。
+
 router.post("/user", async (ctx) => {  //为了账号安全，POST而不是get
     const v = await new TokenValidator().validate(ctx);
     let token;
@@ -26,7 +31,7 @@ router.post("/user", async (ctx) => {  //为了账号安全，POST而不是get
             token = generateToken(user.id, Auth.USER);  //scope 参数换为User.USER，根据路由，是/user，就是User.USER
             //scope参数是为了分级用户，值为数值，跟路由的等级的数值对比，可以划分用户的权限。
             break;
-        case LoginType.user_mini_program:
+        case LoginType.user_mini_program:   //小程序登录
 
             break;
         default:
