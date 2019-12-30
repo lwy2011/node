@@ -6,6 +6,8 @@ import util from "util";
 import axios from "axios";
 import {AuthFailed} from "../../core/http-exception";
 import User from "../model/user";
+import Auth from "../../middlewares/auth";
+import {generateToken} from "../../core/util";
 
 class Wx {
     async codeToToken(code) {
@@ -40,7 +42,7 @@ class Wx {
         }
             //这里就把openid写入了或者拿到openid的数据了。
         //下面就是要生成token 了！
-
+        return generateToken(user.id,Auth.USER)
     }
 }
 
