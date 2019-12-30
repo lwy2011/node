@@ -5,6 +5,7 @@ import config from "../../config";
 import util from "util";
 import axios from "axios";
 import {AuthFailed} from "../../core/http-exception";
+import User from "../model/user";
 
 class Wx {
     async codeToToken(code) {
@@ -26,6 +27,20 @@ class Wx {
         if (res.errcode !== 0) {
             throw new AuthFailed(res.errmsg, res.errcode);
         }
+        //openid 很重要，唯一标识！要很机密的，所以，不能把它作为验证身份，那就把它存到本地的User数据库中，
+        // 建立openid与uid 的映射
+
+        //openid要写入到数据库中去，但是数据库中如果有了，就不需要写入了。
+        // 先查询，要不要写入
+        // 在User模型中集成数据库的操作方法，而不是这里。
+
+        let user = User.verifyWxOpenId(res.openid);
+        if (!user) {
+            user = User.wxOpenidCreate(res.openid);
+        }
+            //这里就把openid写入了或者拿到openid的数据了。
+        //下面就是要生成token 了！
+
     }
 }
 

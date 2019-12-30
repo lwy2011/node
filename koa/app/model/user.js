@@ -1,4 +1,4 @@
-import {Sequelize, Model} from "sequelize";
+import {Model, Sequelize} from "sequelize";
 import sequelize from "../../core/db";
 import bcrypt from "bcrypt";
 import {AuthFailed} from "../../core/http-exception";
@@ -19,6 +19,16 @@ class User extends Model {
             throw new AuthFailed("密码错误！");
         }
         return user;
+    }
+
+    static async verifyWxOpenId(openid) {
+        return await User.findOne({
+            where: {openid}
+        });
+    }
+
+    static async wxOpenidCreate(data) {
+        return await User.create(data);
     }
 }
 
