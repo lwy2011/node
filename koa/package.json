@@ -8,6 +8,7 @@
         "build": "babel app -d dist"
     },
     "dependencies": {
+        "axios": "^0.19.0",
         "babel-polyfill": "^6.26.0",
         "basic-auth": "^2.0.1",
         "bcrypt": "^3.0.7",
