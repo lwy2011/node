@@ -5,6 +5,7 @@ import User from "../../model/user";
 import HttpException from "../../../core/http-exception";
 import {generateToken} from "../../../core/util";
 import Auth from "../../../middlewares/auth";
+import Wx from "../../services/wx";
 
 
 const router = new Router({
@@ -31,13 +32,17 @@ router.post("/user", async (ctx) => {  //为了账号安全，POST而不是get
             token = generateToken(user.id, Auth.USER);  //scope 参数换为User.USER，根据路由，是/user，就是User.USER
             //scope参数是为了分级用户，值为数值，跟路由的等级的数值对比，可以划分用户的权限。
             break;
-        case LoginType.user_mini_program:   //小程序登录
 
+
+        case LoginType.user_mini_program:   //小程序登录
+            token = await Wx.codeToToken(v.get("body.account"));
             break;
+
+
         default:
             throw new HttpException("无法支持的登陆方式！", 10003, 404);
     }
-    ctx.body= {token};
+    ctx.body = {token};
 });
 
 

@@ -10,7 +10,7 @@ import Auth from "../../middlewares/auth";
 import {generateToken} from "../../core/util";
 
 class Wx {
-    async codeToToken(code) {
+    static async codeToToken(code) {
         //登录原理：
         //前端生成和发送code，接受到code，
         // 后端把code , appid , appsecret ,code 发送给wechat http API
@@ -21,13 +21,15 @@ class Wx {
         //     appid appsecret小程序申请的
         const {appUrl, appId, appSecret} = config.wx;
         const url = util.format(appUrl, appId, appSecret, code);
-        const res = await axios.get(url);
-        if (res.status !== 200) {
-            throw new AuthFailed("openid获取失败！");
-        }
 
-        if (res.errcode !== 0) {
-            throw new AuthFailed(res.errmsg, res.errcode);
+        const result = await axios.get(url);
+        if (result.status !== 200) {
+            throw new AuthFailed("openid获取失败！" + "  " + result.errcode);
+        }
+        const {errcode, errmsg} = result.data;
+        if (errcode !== 0) {
+            // console.log(errcode);
+            throw new AuthFailed(errmsg, errcode); //强制转化为数字status
         }
         //openid 很重要，唯一标识！要很机密的，所以，不能把它作为验证身份，那就把它存到本地的User数据库中，
         // 建立openid与uid 的映射
@@ -36,13 +38,13 @@ class Wx {
         // 先查询，要不要写入
         // 在User模型中集成数据库的操作方法，而不是这里。
 
-        let user = User.verifyWxOpenId(res.openid);
+        let user = User.verifyWxOpenId(result.openid);
         if (!user) {
-            user = User.wxOpenidCreate(res.openid);
+            user = User.wxOpenidCreate(result.openid);
         }
-            //这里就把openid写入了或者拿到openid的数据了。
+        //这里就把openid写入了或者拿到openid的数据了。
         //下面就是要生成token 了！
-        return generateToken(user.id,Auth.USER)
+        return generateToken(user.id, Auth.USER);
     }
 }
 
