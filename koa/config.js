@@ -12,10 +12,9 @@ const config = {
         expiresIn:60*60  //单位为分钟，jsonwebtoken的生态
     },
     wx:{
-        appId:'2143',
-        appSecret :'43433sw',
-        appUrl : `https://api.weixin.qq.com/sns/jscode2session?
-        appid=%s&secret=%s&js_code=%s&grant_type=authorization_code`
+        appId:'wxe55e7cab546ee4c8',
+        appSecret :'7f90b018dd79ea54cd05308bec06c53c',
+        appUrl : `https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code`
     }
 };
 

@@ -21,13 +21,16 @@ class Wx {
         //     appid appsecret小程序申请的
         const {appUrl, appId, appSecret} = config.wx;
         const url = util.format(appUrl, appId, appSecret, code);
-
+        // console.log(url);
         const result = await axios.get(url);
         if (result.status !== 200) {
             throw new AuthFailed("openid获取失败！" + "  " + result.errcode);
         }
-        const {errcode, errmsg} = result.data;
-        if (errcode !== 0) {
+        const {errcode, errmsg,openid} = result.data;
+        console.log(result.data);
+        //当请求成功时，errcode不会存在，所以这里不能只说errcode !== 0：
+
+        if (errcode ) {
             // console.log(errcode);
             throw new AuthFailed(errmsg, errcode); //强制转化为数字status
         }
@@ -38,10 +41,13 @@ class Wx {
         // 先查询，要不要写入
         // 在User模型中集成数据库的操作方法，而不是这里。
 
-        let user = User.verifyWxOpenId(result.openid);
+        let user = await User.verifyWxOpenId(openid);
+        console.log(user,1);
         if (!user) {
-            user = User.wxOpenidCreate(result.openid);
+            user = await User.wxOpenidCreate({openid});
         }
+        console.log(user,2);
+
         //这里就把openid写入了或者拿到openid的数据了。
         //下面就是要生成token 了！
         return generateToken(user.id, Auth.USER);

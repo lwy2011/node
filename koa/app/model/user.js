@@ -22,13 +22,15 @@ class User extends Model {
     }
 
     static async verifyWxOpenId(openid) {
-        return await User.findOne({
+        const user = await User.findOne({
             where: {openid}
         });
+        return user
     }
 
     static async wxOpenidCreate(data) {
-        return await User.create(data);
+        const user = await User.create(data);
+        return user
     }
 }
 
