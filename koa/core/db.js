@@ -32,6 +32,6 @@ const sequelize = new Sequelize(
 );
 
 sequelize.sync({   //数据迁移是生产阶段要做的，一定要小心，最好人为做出来！
-    force:Boolean(config.environment === 'dev')    ,//开发阶段，数据库设置改变，自动删除所有数据，重新建表。生产阶段必须要
+    //force:Boolean(config.environment === 'dev')    ,//开发阶段，数据库设置改变，自动删除所有数据，重新建表。生产阶段必须要
 });   //必须要加上！传模型自动,
 export default sequelize;

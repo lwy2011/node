@@ -37,14 +37,26 @@ const router = new Router({
 
 
 //测试前端发送token过来，验证token：
-router.get("/latest", new Auth(9).token,async (ctx, next) => {
+router.get("/latest", new Auth(2).token, async (ctx, next) => {
     //这里第一个中间键已经验证好了前端的token值了。
     //现在要对用户做权限管理！
     // 思路，用户分级，路由分级：这里就用到那个scope数据了，
     //scope源于Auth中间键！数字表示！Auth那里，枚举所有的用户的类型赋值数值，分级大小。
     //同时Auth的this.level是到时候在路由那里充当中间键实例化时，把路由的等级数值传入，这样就可以比较了！
     // 所以这里的 new Auth(2).token,里的2就是代表当前的路由等级为2.
-    ctx.body = ctx.auth
+    // ctx.body = ctx.auth={uid,scope}
+
+    // 以上对token进行验证成功了，下面就开始，发送数据了：
+
+    // 最新一期，从flow表里通过index字段排序，拿最大的。
+    const flow = await Flow.findOne(  //拿第一个数据，排序，从大到小。
+        {
+            order: [
+                "index", "DESC"
+            ]
+        }
+    );
+    ctx.body = flow;
 });
 export default router;
 // export {latest};

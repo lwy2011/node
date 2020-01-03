@@ -13,6 +13,10 @@ Flow.init(
         index: Sequelize.INTEGER,
         art_id: Sequelize.INTEGER,  //各个表的数据包的id
         type: Sequelize.INTEGER,
+        status: Sequelize.INTEGER
         // type:1 ,movie , 2 ,music,3,sentence
-    },{sequelize,tableName:'flow'}
+    }, {sequelize, tableName: "flow"}
 );
+
+
+export default Flow;
