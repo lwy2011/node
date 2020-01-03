@@ -9,7 +9,8 @@
 //music url
 
 
-import Sequelize, {Model} from "sequelize";
+import {Model, Sequelize} from "sequelize";
+import sequelize from "../../core/db";
 
 
 const classicFields = {
