@@ -1,6 +1,7 @@
 import Router from "koa-router";
 import Auth from "../../../middlewares/auth";
 // import PositiveIntegerValidator from "../../validators/positiveInteger";
+import Flow from "../../model/flow.js";
 
 const router = new Router({
     prefix: "/v1/classic"
@@ -49,14 +50,13 @@ router.get("/latest", new Auth(2).token, async (ctx, next) => {
     // 以上对token进行验证成功了，下面就开始，发送数据了：
 
     // 最新一期，从flow表里通过index字段排序，拿最大的。
-    const flow = await Flow.findOne(  //拿第一个数据，排序，从大到小。
+    ctx.body = await Flow.findOne(  //拿第一个数据，排序，从大到小。
         {
             order: [
-                "index", "DESC"
+                ["index", "DESC"]
             ]
         }
     );
-    ctx.body = flow;
 });
 export default router;
 // export {latest};
