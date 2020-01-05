@@ -53,12 +53,24 @@ class Forbbiden extends HttpException {
 }
 
 class LikeError extends HttpException {
-    constructor(msg, code,status = 201) {
+    constructor(msg, code) {
         super();
         this.msg = msg || "您已经点过赞了！";
         this.code = code || 10005;
-        this.status = status;
+        this.status = 400;
+    }
+}
+class DislikeError extends HttpException {
+    constructor(msg, code) {
+        super();
+        this.msg = msg || "您已经取消点赞了！";
+        this.code = code || 10005;
+        this.status = 400;
     }
 }
 export default HttpException;
-export {ParameterException, NotFound,Success,AuthFailed,Forbbiden,LikeError};
+export {
+    ParameterException, NotFound,
+    Success,AuthFailed,Forbbiden,
+    LikeError,DislikeError
+};
