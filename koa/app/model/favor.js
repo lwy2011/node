@@ -20,7 +20,7 @@ class Favor extends Model {
         }
 
         //Sequelize 的事务处理：https://github.com/demopark/sequelize-docs-Zh-CN/blob/master/transactions.md
-        sequelize.transaction(async t => {
+        return sequelize.transaction(async t => {
             //各个表的操作：
             //计入 用户跟art的关系！
             await Favor.create({art_id, uid, type}, {transaction: t});
@@ -28,13 +28,7 @@ class Favor extends Model {
             const art = await Art.getData(type, art_id);
             await art.increment("fav_nums", {by: 1, transaction: t});
 
-        }).then(
-            result => {
-
-            }
-        ).catch(e => {
-
-        });
+        })
 
     }
 

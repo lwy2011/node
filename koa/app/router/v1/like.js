@@ -10,7 +10,7 @@ const router = new Router({prefix: "/v1/classic"});
 
 router.post("/like", new Auth(2).token, async (ctx) => {
     //前端传的数据：第一步，参数验证：type,art_id
-    const v = new LikeValidator().validate(ctx);
+    const v = await new LikeValidator().validate(ctx,{id:'art_id'});
     await Favor.like(
         v.get("body.art_id"),
         v.get("body.type"),
