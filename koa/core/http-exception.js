@@ -51,5 +51,14 @@ class Forbbiden extends HttpException {
         this.status = status;
     }
 }
+
+class LikeError extends HttpException {
+    constructor(msg, code,status = 201) {
+        super();
+        this.msg = msg || "您已经点过赞了！";
+        this.code = code || 10005;
+        this.status = status;
+    }
+}
 export default HttpException;
-export {ParameterException, NotFound,Success,AuthFailed,Forbbiden};
+export {ParameterException, NotFound,Success,AuthFailed,Forbbiden,LikeError};
