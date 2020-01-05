@@ -27,14 +27,14 @@ class Movie extends Model {
 }
 
 
-Movie.init(classicFields,{sequelize,tableName:'movie'});
+Movie.init(classicFields, {sequelize, tableName: "movie"});
 
 class Sentence extends Model {
 
 }
 
 
-Sentence.init(classicFields,{sequelize,tableName:'sentence'});
+Sentence.init(classicFields, {sequelize, tableName: "sentence"});
 
 
 class Music extends Model {
@@ -43,9 +43,9 @@ class Music extends Model {
 
 
 Music.init(
-    {...classicFields,url:Sequelize.STRING},
-    {sequelize,tableName:'movie'}
-    );
+    Object.assign(classicFields, {url: Sequelize.STRING}),
+    {sequelize, tableName: "movie"}
+);
 
 
-export {Movie,Music,Sentence}
+export {Movie, Music, Sentence};
