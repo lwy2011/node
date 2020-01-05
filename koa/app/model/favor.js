@@ -1,6 +1,6 @@
 import {Model, Sequelize} from "sequelize";
 import sequelize from "../../core/db";
-import {LikeError} from "../../core/http-exception";
+import {DislikeError, LikeError} from "../../core/http-exception";
 import Flow from "./flow";
 import Art from "./art";
 
@@ -14,7 +14,9 @@ class Favor extends Model {
         //数据库原则： ACID ：原子性，一致性，隔离性，持久性
 
         //检查是否已经点赞了：
-        const favor = await Favor.getOne(art_id, type, uid);
+        const favor = await Favor.findOne({
+            where :{art_id, type, uid}
+        });
         if (favor) {
             throw new LikeError();
         }
@@ -28,17 +30,29 @@ class Favor extends Model {
             const art = await Art.getData(type, art_id);
             await art.increment("fav_nums", {by: 1, transaction: t});
 
-        })
+        });
 
     }
 
     static async dislike(art_id, type, uid) {
+        const favor = await Favor.findOne({
+            where :{art_id, type, uid}
+        });
+        if (!favor) {
+            throw new DislikeError();
+        }
 
+        //Sequelize 的事务处理：https://github.com/demopark/sequelize-docs-Zh-CN/blob/master/transactions.md
+        return sequelize.transaction(async t => {
+            //各个表的操作：
+            await favor.destroy({
+                force: true, transaction: t
+            });
+            const art = await Art.getData(type, art_id);
+            await art.decrement("fav_nums", {by: 1, transaction: t});
+        });
     }
 
-    static async getOne(art_id, type, uid) {
-        return await Favor.findOne({art_id, type, uid});
-    }
 }
 
 //业务表，抽象出来点赞的 表，把点赞的用户跟点赞的作品关联起来了。
