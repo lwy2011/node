@@ -3,9 +3,15 @@
 
 import sequelize from "../../core/db";
 import {Model, default as Sequelize} from "sequelize";
+import Art from "./art";
 
 class Flow extends Model {
-
+    static async getArt(filters, scope) {
+        const flow = await Flow.findOne(filters);
+        const art = await Art.getData(flow.type, flow.art_id, scope);
+        art.setDataValue("index", flow.index);
+        return art;
+    }
 }
 
 Flow.init(
