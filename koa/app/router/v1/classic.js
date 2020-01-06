@@ -59,7 +59,7 @@ router.get("/latest", new Auth(2).token, async (ctx, next) => {
             ]
         }
     );
-    const art = await Art.getData(flow.type, flow.art_id);
+    const art = await Art.getData(flow.type, flow.art_id,'noTime');
     //art 要加入期刊的期数：
     // art.index = flow.index 这样直接加不行：Sequelize返回的数据包是个类，而koa的ctx.body会处理成json格式，
     //Sequelize内部对数据，指定为art.dataValues的数据，Sequelize会告诉用它的框架，返回这部分数据，
