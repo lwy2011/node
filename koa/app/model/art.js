@@ -6,7 +6,7 @@ class Art {
         let data;
         switch (type) {
             case 100:
-                data = await Movie.findOne(filter);
+                data = await Movie.scope('noTime').findOne(filter);
                 break;
             case 200:
                 data = await Music.findOne(filter);

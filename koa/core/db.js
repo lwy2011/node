@@ -26,8 +26,20 @@ const sequelize = new Sequelize(
             updatedAt:'updated_at',
             deletedAt:'deleted_at',
             //不要驼峰命名
-            underscored:true
-        }      //私人订制参数设置
+            underscored:true,
+
+            //如何预定义查询时，过滤一些字段？用到scope,它用在model层次，
+            // 但是全局层次过滤，用到sequelize实例层次！
+            scopes:{
+                noTime : {
+                    attributes:{
+                        exclude:['created_at','updated_at','deleted_at']
+                    }
+                }
+            }
+        }     //私人订制参数设置
+
+
     }
 );
 
