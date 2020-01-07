@@ -4,6 +4,9 @@ import Auth from "../../../middlewares/auth";
 import Flow from "../../model/flow.js";
 import Art from "../../model/art";
 import PositiveIntegerValidator from "../../validators/positiveInteger";
+import LikeClassicValidator from "../../validators/like-classic";
+import {NotFound} from "../../../core/http-exception";
+import Favor from "../../model/favor";
 
 const router = new Router({
     prefix: "/v1/classic"
@@ -92,12 +95,40 @@ router.get("/:index/previous", new Auth(2).token, async ctx => {
     const index = v.get("path.index");
     const art = await Flow.getArt(
         {
-            where: {index:index-1}
+            where: {index: index - 1}
         },
         "noTime"
     );
 
     ctx.body = art;
+});
+
+//为什么要这个API？分化逻辑，期刊的详细内容是死的，点赞取消赞是动态的信息。
+// 死板的信息放前端缓存，性能优化！避免二次请求。请求越少，性能越好！
+//动态数据实时性，所以，必须要实时来拿到的。
+//数据：路由里，拿到要用path不是body。
+//坑：body里的数据，是json，数值是数字字符串的，不会变。
+// 而path里的数据都是字符串！如果要转成数字，一定要记得！
+
+router.get("/:type/:id/favor", new Auth(2).token, async ctx => {
+    //验证 type ,id ，都是字符串！在path里！
+    //跟likeVilidator很像：但是有区别的，源于一个是body的json，一个是path的字符串：
+    // id的验证，不用担心，强制转化为数字，但是type 的有问题的！
+    const v = await new LikeClassicValidator("path").validate(ctx);
+    //强制转化path的参数为数字，否则会是字符串，因为校验器那里没有强制转换！
+    const type = +v.get("path.type");
+    const id = v.get("path.id");
+    const art = await Art.getData(type, id);
+    if (!art) {
+        throw new NotFound();
+    }
+    const favor = await Favor.findOne({
+        where: {art_id: id, type, uid: ctx.auth.uid}
+    });
+    ctx.body = {
+        fav_nums: art.fav_nums,
+        like_status: Boolean(favor),
+    };
 });
 
 export default router;

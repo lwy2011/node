@@ -3,14 +3,15 @@ import LoginType from "../../core/enum";
 
 //点赞业务的参数校验：type,art_id
 class LikeValidator extends PositiveIntegerValidator {
-    constructor() {
+    constructor(key = 'body') {
         super();
         this.validateType = vals => {
-            const {type} = vals.body;
+            let {type} = vals[key];
             if (!type) {
                 throw new Error("type是必须参数！");
             }
-            if (!LoginType.isThisType(type)) {
+            console.log(vals[key]);
+            if (!LoginType.isThisType(key === 'path'? +type:type)) {
                 throw new Error("type参数不合法");
             }
         };
