@@ -15,4 +15,12 @@ const LoginType = {
 };
 
 
+const ClassicType = {
+    music: 200,
+    movie: 100,
+    sentence: 300,
+    book: 400,
+    isThisType
+};
 export default LoginType;
+export {ClassicType};

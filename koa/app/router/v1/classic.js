@@ -114,7 +114,7 @@ router.get("/:type/:id/favor", new Auth(2).token, async ctx => {
     //验证 type ,id ，都是字符串！在path里！
     //跟likeVilidator很像：但是有区别的，源于一个是body的json，一个是path的字符串：
     // id的验证，不用担心，强制转化为数字，但是type 的有问题的！
-    const v = await new LikeClassicValidator("path").validate(ctx);
+    const v = await new LikeClassicValidator("path",'likeClassicValidator').validate(ctx);
     //强制转化path的参数为数字，否则会是字符串，因为校验器那里没有强制转换！
     const type = +v.get("path.type");
     const id = v.get("path.id");

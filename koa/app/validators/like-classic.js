@@ -4,8 +4,8 @@
 import LikeValidator from "./like";
 
 class LikeClassicValidator extends LikeValidator {
-    constructor(key){
-        super(key)
+    constructor(key,likeClassicValidator){
+        super(key,likeClassicValidator)
     }
 }
 
