@@ -144,12 +144,18 @@ router.get("/:type/:id", new Auth(2).token, async ctx => {
         type, id, ctx.auth.uid
     );
     const flow = Flow.findOne(
-        {where:{type, art_id:id}}
+        {where: {type, art_id: id}}
     );
     art.setDataValue("index", flow.index);
 
     ctx.body = art;
 });
 
+// 获取用户所有喜欢的art。
+router.get("/favor", new Auth(2).token, async ctx => {
+    const {uid} = ctx.auth;
+    const ids = await Favor.getClassicFav(uid);
+    ctx.body = ids;
+});
 export default router;
 // export {latest};

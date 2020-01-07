@@ -1,7 +1,7 @@
-import {Model, Sequelize} from "sequelize";
+import {Model,  Sequelize} from "sequelize";
 import sequelize from "../../core/db";
-import {DislikeError, LikeError} from "../../core/http-exception";
-import Flow from "./flow";
+import {DislikeError, LikeError, NotFound} from "../../core/http-exception";
+// import Flow from "./flow";
 import Art from "./art";
 
 
@@ -15,7 +15,7 @@ class Favor extends Model {
 
         //检查是否已经点赞了：
         const favor = await Favor.findOne({
-            where :{art_id, type, uid}
+            where: {art_id, type, uid}
         });
         if (favor) {
             throw new LikeError();
@@ -36,7 +36,7 @@ class Favor extends Model {
 
     static async dislike(art_id, type, uid) {
         const favor = await Favor.findOne({
-            where :{art_id, type, uid}
+            where: {art_id, type, uid}
         });
         if (!favor) {
             throw new DislikeError();
@@ -53,6 +53,34 @@ class Favor extends Model {
         });
     }
 
+    static async getClassicFav(uid) {
+        //uid,type = 100 ,200,300,book = 400
+        const favor = await Favor.findAll(
+            {
+                where: {
+                    uid,
+                    type: {
+                        [Sequelize.Op.not]: 400  //Op需要用到Sequelize的
+                    }
+                }
+            }
+        );
+        console.log(favor, uid);
+        if (!favor.length) {
+            throw new NotFound();
+        }
+        const getIds = {
+            100: [],
+            200: [],
+            300: []
+        };
+        favor.map(
+            vals => {
+                getIds[vals.type + ""].push(vals.art_id);
+            }
+        );
+        return getIds;
+    }
 }
 
 //业务表，抽象出来点赞的 表，把点赞的用户跟点赞的作品关联起来了。
