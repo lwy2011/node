@@ -65,9 +65,9 @@ class Favor extends Model {
                 }
             }
         );
-        console.log(favor, uid);
+        // console.log(favor, uid);
         if (!favor.length) {
-            throw new NotFound();
+            throw new NotFound("您还没有添加喜欢哦！",201);
         }
         const getIds = {
             100: [],
@@ -76,7 +76,7 @@ class Favor extends Model {
         };
         favor.map(
             vals => {
-                getIds[vals.type + ""].push(vals.art_id);
+                getIds[vals.type].push(vals.art_id);
             }
         );
         return getIds;

@@ -155,7 +155,8 @@ router.get("/:type/:id", new Auth(2).token, async ctx => {
 router.get("/favor", new Auth(2).token, async ctx => {
     const {uid} = ctx.auth;
     const ids = await Favor.getClassicFav(uid);
-    ctx.body = ids;
+    const arts = await Art.getAllArts(ids);
+    ctx.body = arts;
 });
 export default router;
 // export {latest};
