@@ -5,7 +5,6 @@ import Flow from "../../model/flow.js";
 import Art from "../../model/art";
 import PositiveIntegerValidator from "../../validators/positiveInteger";
 import LikeClassicValidator from "../../validators/like-classic";
-import {NotFound} from "../../../core/http-exception";
 import Favor from "../../model/favor";
 
 const router = new Router({
@@ -71,7 +70,7 @@ router.get("/latest", new Auth(2).token, async (ctx) => {
     // art.setDataValue("index", flow.index);
 
     const art = await Flow.getArt(
-        {order: [["index", "DESC"]]}, "noTime"
+        {order: [["index", "DESC"]]}, ctx.auth.uid, "noTime"
     );
     ctx.body = art;
 });
@@ -84,6 +83,7 @@ router.get("/:index/next", new Auth(2).token, async ctx => {
         {
             where: {index: index + 1}
         },
+        ctx.auth.uid,
         "noTime"
     );
     ctx.body = art;
@@ -97,6 +97,7 @@ router.get("/:index/previous", new Auth(2).token, async ctx => {
         {
             where: {index: index - 1}
         },
+        ctx.auth.uid,
         "noTime"
     );
 
@@ -114,21 +115,40 @@ router.get("/:type/:id/favor", new Auth(2).token, async ctx => {
     //验证 type ,id ，都是字符串！在path里！
     //跟likeVilidator很像：但是有区别的，源于一个是body的json，一个是path的字符串：
     // id的验证，不用担心，强制转化为数字，但是type 的有问题的！
-    const v = await new LikeClassicValidator("path",'likeClassicValidator').validate(ctx);
+    const v = await new LikeClassicValidator("path", "likeClassicValidator").validate(ctx);
     //强制转化path的参数为数字，否则会是字符串，因为校验器那里没有强制转换！
     const type = +v.get("path.type");
     const id = v.get("path.id");
     const art = await Art.getData(type, id);
-    if (!art) {
-        throw new NotFound();
-    }
+
     const favor = await Favor.findOne({
         where: {art_id: id, type, uid: ctx.auth.uid}
     });
     ctx.body = {
         fav_nums: art.fav_nums,
         like_status: Boolean(favor),
+        id: art.id
     };
+});
+
+//获取某一期的详细内容：
+router.get("/:type/:id", new Auth(2).token, async ctx => {
+    //验证 type ,id ，都是字符串！在path里！
+    //跟likeVilidator很像：但是有区别的，源于一个是body的json，一个是path的字符串：
+    // id的验证，不用担心，强制转化为数字，但是type 的有问题的！
+    const v = await new LikeClassicValidator("path", "likeClassicValidator").validate(ctx);
+    //强制转化path的参数为数字，否则会是字符串，因为校验器那里没有强制转换！
+    const type = +v.get("path.type");
+    const id = v.get("path.id");
+    const art = await Art.getDataWithFavor(
+        type, id, ctx.auth.uid
+    );
+    const flow = Flow.findOne(
+        {where:{type, art_id:id}}
+    );
+    art.setDataValue("index", flow.index);
+
+    ctx.body = art;
 });
 
 export default router;

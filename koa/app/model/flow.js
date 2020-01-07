@@ -6,9 +6,9 @@ import {Model, default as Sequelize} from "sequelize";
 import Art from "./art";
 
 class Flow extends Model {
-    static async getArt(filters, scope) {
+    static async getArt(filters,uid, scope) {
         const flow = await Flow.findOne(filters);
-        const art = await Art.getData(flow.type, flow.art_id, scope);
+        const art = await Art.getDataWithFavor(flow.type, flow.art_id,uid, scope);
         art.setDataValue("index", flow.index);
         return art;
     }
