@@ -119,15 +119,13 @@ router.get("/:type/:id/favor", new Auth(2).token, async ctx => {
     //强制转化path的参数为数字，否则会是字符串，因为校验器那里没有强制转换！
     const type = +v.get("path.type");
     const id = v.get("path.id");
-    const art = await Art.getData(type, id);
+    const {art,like_status} = await new Art(type, id).getDataWithFavor(ctx.auth.uid);
 
-    const favor = await Favor.findOne({
-        where: {art_id: id, type, uid: ctx.auth.uid}
-    });
+
     ctx.body = {
-        fav_nums: art.fav_nums,
-        like_status: Boolean(favor),
-        id: art.id
+        like_status,
+        id:art.id,
+        fav_nums: art.fav_nums
     };
 });
 
@@ -140,15 +138,13 @@ router.get("/:type/:id", new Auth(2).token, async ctx => {
     //强制转化path的参数为数字，否则会是字符串，因为校验器那里没有强制转换！
     const type = +v.get("path.type");
     const id = v.get("path.id");
-    const art = await Art.getDataWithFavor(
-        type, id, ctx.auth.uid
-    );
-    const flow = Flow.findOne(
+    const {art,like_status} = await new Art(type, id).getDataWithFavor(ctx.auth.uid);
+    const flow = await Flow.findOne(
         {where: {type, art_id: id}}
     );
     art.setDataValue("index", flow.index);
 
-    ctx.body = art;
+    ctx.body = {art,like_status};
 });
 
 // 获取用户所有喜欢的art。

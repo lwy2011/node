@@ -2,15 +2,18 @@
 
 
 import sequelize from "../../core/db";
-import {Model, default as Sequelize} from "sequelize";
+import {Model, Sequelize} from "sequelize";
 import Art from "./art";
 
 class Flow extends Model {
     static async getArt(filters,uid, scope) {
         const flow = await Flow.findOne(filters);
-        const art = await Art.getDataWithFavor(flow.type, flow.art_id,uid, scope);
-        art.setDataValue("index", flow.index);
-        return art;
+        //类里面的方法们，加了static修饰后，实例是不能依赖委托引用的！
+
+        const obj = await new Art(flow.type, flow.art_id).getDataWithFavor(uid, scope);
+        //这时候返回的art是个对象，obj.art是art数据包，有setDataValue的方法！
+        obj.art.setDataValue("index", flow.index);
+        return obj;
     }
 }
 

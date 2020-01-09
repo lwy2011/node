@@ -6,6 +6,11 @@ import {Sequelize} from "sequelize";
 // import Flow from "./flow";
 
 class Art {
+    constructor(type, id) {
+        this.type = type;
+        this.id = id;
+    }
+
     static async getData(type, art_id, scopeNeed = null) {
         const filter = {where: {id: art_id}};
         //scope 是预定义的过滤，过滤返回的数据的key们，
@@ -28,14 +33,19 @@ class Art {
     }
 
 //所以的跟art详情的数据请求,都需要拿到当前用户到底点没点赞：
-    static async getDataWithFavor(type, art_id, uid, scopeNeed = null) {
-        const art = await this.getData(type, art_id, scopeNeed);
+    async getDataWithFavor( uid, scopeNeed = null) {
+        //不加static的方法，会被实例委托引用到，加了的，只能通过Art.getData引用！
+        const art = await Art.getData(this.type, this.id, scopeNeed);
         const favor = await Favor.findOne(
-            {where: {type, art_id, uid}}
+            {
+                where: {type:this.type, art_id:this.id, uid}
+            }
         );
-        art.setDataValue("like_status", Boolean(favor));
-        return art;
+        return {art,like_status:Boolean(favor)};
     }
+
+
+
 
 
     //这是期刊某一个的详情的：很迷惑，到底要不要根据是第几期来做这个，否则还要查一个第几期的表：
