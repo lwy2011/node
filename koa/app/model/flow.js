@@ -6,7 +6,7 @@ import {Model, Sequelize} from "sequelize";
 import Art from "./art";
 
 class Flow extends Model {
-    static async getArt(filters,uid, scope) {
+    static async getArt(filters, uid, scope) {
         const flow = await Flow.findOne(filters);
         //类里面的方法们，加了static修饰后，实例是不能依赖委托引用的！
 

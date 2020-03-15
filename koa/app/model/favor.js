@@ -1,4 +1,4 @@
-import {Model,  Sequelize} from "sequelize";
+import {Model, Sequelize} from "sequelize";
 import sequelize from "../../core/db";
 import {DislikeError, LikeError, NotFound} from "../../core/http-exception";
 // import Flow from "./flow";
@@ -17,11 +17,13 @@ class Favor extends Model {
         const favor = await Favor.findOne({
             where: {art_id, type, uid}
         });
+        console.log(art_id, type, uid, favor, "ff");
         if (favor) {
             throw new LikeError();
         }
 
         //Sequelize 的事务处理：https://github.com/demopark/sequelize-docs-Zh-CN/blob/master/transactions.md
+        if (type === 400) return (await Favor.create({art_id, uid, type}));
         return sequelize.transaction(async t => {
             //各个表的操作：
             //计入 用户跟art的关系！
@@ -38,11 +40,15 @@ class Favor extends Model {
         const favor = await Favor.findOne({
             where: {art_id, type, uid}
         });
+        console.log(art_id, type, uid, favor, "ff");
+
         if (!favor) {
             throw new DislikeError();
         }
 
         //Sequelize 的事务处理：https://github.com/demopark/sequelize-docs-Zh-CN/blob/master/transactions.md
+        if (type === 400) return (await favor.destroy());
+
         return sequelize.transaction(async t => {
             //各个表的操作：
             await favor.destroy({
@@ -67,12 +73,13 @@ class Favor extends Model {
         );
         // console.log(favor, uid);
         if (!favor.length) {
-            throw new NotFound("您还没有添加喜欢哦！",201);
+            throw new NotFound("您还没有添加喜欢哦！", 201);
         }
         const getIds = {
             100: [],
             200: [],
-            300: []
+            300: [],
+            400: []
         };
         favor.map(
             vals => {

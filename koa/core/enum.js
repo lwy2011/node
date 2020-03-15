@@ -1,5 +1,6 @@
 function isThisType(val) {
     for (let key in this) {
+        // console.log(val,this[key],val === this[key],555,typeof val);
         if (this[key] === val) return true;
     }
     return false;

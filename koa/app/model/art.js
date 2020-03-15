@@ -2,6 +2,7 @@ import {Music, Sentence, Movie} from "./classic";
 import {NotFound} from "../../core/http-exception";
 import Favor from "./favor";
 import {Sequelize} from "sequelize";
+import HotBook from "./hot-book";
 
 // import Flow from "./flow";
 
@@ -25,6 +26,8 @@ class Art {
                 break;
             case 300:
                 data = await Sentence.scope(scopeNeed).findOne(filter);
+            case 400:
+                data = await HotBook.scope(scopeNeed).findOne(filter);
         }
         if (!data) {
             throw new NotFound();
@@ -33,19 +36,18 @@ class Art {
     }
 
 //所以的跟art详情的数据请求,都需要拿到当前用户到底点没点赞：
-    async getDataWithFavor( uid, scopeNeed = null) {
+    async getDataWithFavor(uid, scopeNeed = null) {
         //不加static的方法，会被实例委托引用到，加了的，只能通过Art.getData引用！
         const art = await Art.getData(this.type, this.id, scopeNeed);
+        //为了防止循环引用：如果是CommonJS的规范，这里会出bug的。import ES6还是比较安全的！
+
         const favor = await Favor.findOne(
             {
-                where: {type:this.type, art_id:this.id, uid}
+                where: {type: this.type, art_id: this.id, uid}
             }
         );
-        return {art,like_status:Boolean(favor)};
+        return {art, like_status: Boolean(favor)};
     }
-
-
-
 
 
     //这是期刊某一个的详情的：很迷惑，到底要不要根据是第几期来做这个，否则还要查一个第几期的表：
