@@ -78,8 +78,7 @@ class Favor extends Model {
         const getIds = {
             100: [],
             200: [],
-            300: [],
-            400: []
+            300: []
         };
         favor.map(
             vals => {
