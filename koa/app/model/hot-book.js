@@ -36,7 +36,7 @@ class HotBook extends Model {
                 //操作数据库模型的实例，一定要用set,get。
                 book.setDataValue("count", favor ? favor.get("count") : 0);
                 // console.log(book.get('id'),22);
-                return book;
+                // return book;不需要return 。
             }
         );
         return books;
