@@ -18,7 +18,7 @@ const config = {
     },
     book: {
         detail: "http://t.yushu.im/v2/book/id/%s",
-        keyword: "http://t.yushu.im/v2/book/search?q=%s&count=%s&start=%s&summary=%s"
+        search: "http://t.yushu.im/v2/book/search?q=%s&count=%s&start=%s&summary=%s"
     }
 };
 

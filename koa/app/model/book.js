@@ -14,6 +14,14 @@ class Book extends Model {
         const url = util.format(global.config.book.detail, this.id);
         return (await axios.get(url)).data;
     };
+
+    //因为是整个书类的方法，而不是一本书的。
+    static async search(q, start, count, summary = 1) {  //summary是yushu api的参数，可以不加简介，数据量小
+        const url = util.format(global.config.book.search, encodeURI(q), start, count, summary);
+        // console.log(url, "uuu");  axios的请求，不接受中文，需要encodeURI转码，否则报错！
+        return (await axios.get(url)).data;
+        // console.log(data);
+    }
 }
 
 Book.init({
