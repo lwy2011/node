@@ -47,5 +47,9 @@ router.post("/short_comment/add", new Auth(2).token, async ctx => {
     console.log(res, "rr");
     ctx.body = res;
 });
-
+router.get("/:id/short_comment", new Auth(2).token, async ctx => {
+    const v = await new PositiveIntegerValidator().validate(ctx);
+    const res = await BookShortComment.getBookComments(v.get("path.id"));
+    ctx.body = res;
+});
 export default router;

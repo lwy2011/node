@@ -19,6 +19,14 @@ class BookShortComment extends Model {
             }));
         }
     }
+
+    static async getBookComments(book_id) {
+        return (await BookShortComment.findAll({
+            where: {
+                book_id
+            }
+        }));
+    }
 }
 
 BookShortComment.init({
