@@ -87,6 +87,23 @@ class Favor extends Model {
         );
         return getIds;
     }
+
+    static async getBookFavorCount(book_id, uid) {
+        const count = await Favor.count({
+            where: {
+                art_id: book_id,
+                type: 400
+            }
+        });
+        const like_status = await Favor.findOne({
+            where: {
+                art_id: book_id,
+                uid,
+                type: 400
+            }
+        });
+        return {count, like_status: Boolean(like_status)};
+    }
 }
 
 //业务表，抽象出来点赞的 表，把点赞的用户跟点赞的作品关联起来了。

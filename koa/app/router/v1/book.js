@@ -4,6 +4,7 @@ import HotBook from "../../model/hot-book";
 import PositiveIntegerValidator from "../../validators/positiveInteger";
 import Book from "../../model/book";
 import BookSearchValidator from "../../validators/book-search";
+import Favor from "../../model/favor";
 
 
 const router = new Router({prefix: "/v1/book"});
@@ -31,9 +32,12 @@ router.get("/search", new Auth(2).token, async ctx => {
     ctx.body = books;
 });
 
-router.get('/:id/favor',new Auth(2).token,async ctx=>{
-    const v = await new PositiveIntegerValidator().validate(ctx)
+router.get("/:id/favor", new Auth(2).token, async ctx => {
+    const v = await new PositiveIntegerValidator().validate(ctx);
+    console.log(v.get("path"), "qq");
+    const favorCount = await Favor.getBookFavorCount(v.get("path.id"), ctx.auth.uid);
+    ctx.body = favorCount;
     //一本书的点赞情况，favor表，同时，检查，自己有木有点赞过
-})
+});
 
 export default router;
