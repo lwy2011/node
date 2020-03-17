@@ -5,6 +5,8 @@ import PositiveIntegerValidator from "../../validators/positiveInteger";
 import Book from "../../model/book";
 import BookSearchValidator from "../../validators/book-search";
 import Favor from "../../model/favor";
+import ShortCommentAddValidator from "../../validators/short-comment-add";
+import BookShortComment from "../../model/book-short-comment";
 
 
 const router = new Router({prefix: "/v1/book"});
@@ -38,6 +40,12 @@ router.get("/:id/favor", new Auth(2).token, async ctx => {
     const favorCount = await Favor.getBookFavorCount(v.get("path.id"), ctx.auth.uid);
     ctx.body = favorCount;
     //一本书的点赞情况，favor表，同时，检查，自己有木有点赞过
+});
+router.post("/short_comment/add", new Auth(2).token, async ctx => {
+    const v = await new ShortCommentAddValidator().validate(ctx, {id: "book_id"});
+    const res = await BookShortComment.add(v.get("body.content"), v.get("body.book_id"));
+    console.log(res, "rr");
+    ctx.body = res;
 });
 
 export default router;
