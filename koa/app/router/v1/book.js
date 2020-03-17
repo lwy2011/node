@@ -7,6 +7,7 @@ import BookSearchValidator from "../../validators/book-search";
 import Favor from "../../model/favor";
 import ShortCommentAddValidator from "../../validators/short-comment-add";
 import BookShortComment from "../../model/book-short-comment";
+import {Success} from "../../../core/http-exception";
 
 
 const router = new Router({prefix: "/v1/book"});
@@ -17,7 +18,7 @@ router.get("/:id/detail", new Auth(2).token, async (ctx) => {
     const {id} = v.get("path");
     const book = await new Book(id).detail();
     // console.log(book);
-    ctx.body = JSON.stringify(book);
+    ctx.body = book;
 });
 router.get("/hot_list", new Auth(2).token, async ctx => {
 //book 图书的基本信息，是基础数据，跟业务无关，所以是基础服务数据
@@ -44,8 +45,9 @@ router.get("/:id/favor", new Auth(2).token, async ctx => {
 router.post("/short_comment/add", new Auth(2).token, async ctx => {
     const v = await new ShortCommentAddValidator().validate(ctx, {id: "book_id"});
     const res = await BookShortComment.add(v.get("body.content"), v.get("body.book_id"));
-    console.log(res, "rr");
-    ctx.body = res;
+    // console.log(res,'r');
+    throw new Success();
+    // ctx.body = res;
 });
 router.get("/:id/short_comment", new Auth(2).token, async ctx => {
     const v = await new PositiveIntegerValidator().validate(ctx);
