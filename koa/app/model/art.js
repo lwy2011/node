@@ -32,6 +32,7 @@ class Art {
         if (!data) {
             throw new NotFound();
         }
+        // data.exclude = ['index','image']
         return data;
     }
 
@@ -73,6 +74,12 @@ class Art {
                 arts = arts.concat(lists);
             }
         }
+        // arts.exclude = ['image']这里设置，不会成功的，因为需要在数组里的各个art的实例加这个属性的！
+        //有种方法是在art的各个原型上加，比如：Movie.prototype.exclude = ['image']，但是就写死了！
+        //最好是在实例上加，这样才私有化，灵活可定制。
+        // arts.map(
+        //     art => art.exclude = ["image"]
+        // );  成功了！
         return arts;
     }
 
@@ -87,7 +94,6 @@ class Art {
         };
         switch (+type) {
             case 100 :
-                // console.log(ids,type);
                 arts = await Movie.findAll(filter);
                 break;
             case 200:
