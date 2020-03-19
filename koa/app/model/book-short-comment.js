@@ -27,13 +27,13 @@ class BookShortComment extends Model {
             }
         }));
     }
-    toJSON() {
-        return {
-            book_id:this.getDataValue('book_id'),
-            content:this.getDataValue('content'),
-            favor_nums:this.getDataValue('favor_nums')
-        }
-    }
+    // toJSON() {
+    //     return {
+    //         book_id:this.getDataValue('book_id'),
+    //         content:this.getDataValue('content'),
+    //         favor_nums:this.getDataValue('favor_nums')
+    //     }
+    // }
 }
 
 BookShortComment.init({
