@@ -3,6 +3,15 @@ import sequelize from "../../core/db";
 
 
 class BookShortComment extends Model {
+    // constructor() {
+    //     super();
+    // }
+    //加constructor 用model方法的bug。跟属性字段的defaultValue有关。。。
+// {favor_nums: 0, id: null}
+//  {favor_nums: 0, id: null}
+
+    // sequelize对model方法查询会出bug，尽量不在各个表的model里加constructor!
+
     static async add(content, book_id) {
         const data = await BookShortComment.findOne(
             {
@@ -27,6 +36,7 @@ class BookShortComment extends Model {
             }
         }));
     }
+
     // toJSON() {
     //     return {
     //         book_id:this.getDataValue('book_id'),
