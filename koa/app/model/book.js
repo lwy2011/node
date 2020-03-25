@@ -5,13 +5,15 @@ import util from "util";
 import axios from "axios";
 
 class Book extends Model {
-    constructor(id) {
-        super();
-        this.id = id;
-    }
+    // constructor(id) {
+    //     super();
+    //     this.id = id;
+    // }
+    //因为model这里用constructor会出错，源于sequelize的orm的问题。以后不要用constructor！
 
-    async detail() {
-        const url = util.format(global.config.book.detail, this.id);
+
+    async detail(id) {
+        const url = util.format(global.config.book.detail, id);
         return (await axios.get(url)).data;
     };
 

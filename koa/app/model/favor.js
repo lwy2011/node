@@ -23,7 +23,6 @@ class Favor extends Model {
         }
 
         //Sequelize 的事务处理：https://github.com/demopark/sequelize-docs-Zh-CN/blob/master/transactions.md
-        if (type === 400) return (await Favor.create({art_id, uid, type}));
         return sequelize.transaction(async t => {
             //各个表的操作：
             //计入 用户跟art的关系！
@@ -31,9 +30,7 @@ class Favor extends Model {
             //对art的具体的model的包的点赞数加一：
             const art = await Art.getData(type, art_id);
             await art.increment("fav_nums", {by: 1, transaction: t});
-
         });
-
     }
 
     static async dislike(art_id, type, uid) {
@@ -47,7 +44,6 @@ class Favor extends Model {
         }
 
         //Sequelize 的事务处理：https://github.com/demopark/sequelize-docs-Zh-CN/blob/master/transactions.md
-        if (type === 400) return (await favor.destroy());
 
         return sequelize.transaction(async t => {
             //各个表的操作：

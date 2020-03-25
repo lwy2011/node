@@ -16,7 +16,7 @@ const router = new Router({prefix: "/v1/book"});
 router.get("/:id/detail", new Auth(2).token, async (ctx) => {
     const v = await new PositiveIntegerValidator().validate(ctx);
     const {id} = v.get("path");
-    const book = await new Book(id).detail();
+    const book = await new Book().detail(id);
     // console.log(book);
     ctx.body = book;
 });

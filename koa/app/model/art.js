@@ -2,7 +2,7 @@ import {Music, Sentence, Movie} from "./classic";
 import {NotFound} from "../../core/http-exception";
 import Favor from "./favor";
 import {Sequelize} from "sequelize";
-import HotBook from "./hot-book";
+import Book from "./book";
 
 // import Flow from "./flow";
 
@@ -26,8 +26,16 @@ class Art {
                 break;
             case 300:
                 data = await Sentence.scope(scopeNeed).findOne(filter);
+                break;
             case 400:
-                data = await HotBook.scope(scopeNeed).findOne(filter);
+                data = await Book.scope(scopeNeed).findOne(filter);
+                if (!data) {
+                    // console.log(art_id,{id: art_id},99);
+                    data = await Book.create({id: art_id});
+                }
+                break;
+            default:
+                break;
         }
         if (!data) {
             throw new NotFound();
