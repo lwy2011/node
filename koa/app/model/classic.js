@@ -14,7 +14,13 @@ import sequelize from "../../core/db";
 
 
 const classicFields = {
-    image: Sequelize.STRING,
+    image: {
+        type:Sequelize.STRING,
+        get(){
+            return global.config.host + this.getDataValue('image')
+        },
+        //如此处理补全url的方案失败，后端可以拿到，前端拿不到的，还是原本的url。不起作用。
+    },
     title: Sequelize.STRING,
     content: Sequelize.STRING,
     pubdate: Sequelize.DATEONLY,

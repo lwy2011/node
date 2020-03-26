@@ -41,10 +41,10 @@ class Art {
             throw new NotFound();
         }
         //修补url路径，静态资源的获取！
-        if (type !== 400 && data.image){
-            const imageUrl = data.dataValues.image
-            data.dataValues.image = global.config.host + imageUrl
-        }
+        // if (type !== 400 && data.image){
+        //     const imageUrl = data.dataValues.image
+        //     data.dataValues.image = global.config.host + imageUrl
+        // }
         // data.exclude = ['index','image']
         return data;
     }

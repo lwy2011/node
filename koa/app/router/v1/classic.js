@@ -143,7 +143,11 @@ router.get("/:type/:id", new Auth(2).token, async ctx => {
         {where: {type, art_id: id}}
     );
     art.setDataValue("index", flow.index);
-
+    //art.image,art.get('image')都是完整的url，源于classic model上的image字段的get方法
+    //art.getDateValue('image')是原始的数据库的url
+    //sequelize model上定义的toJSON方法取得值是 数据实例的dataValues，
+    // 所以，这里toJSON方法会拿不到get方法加工的url
+    console.log(art.image,'aaa',art.getDataValue('image'),11);
     ctx.body = {art, like_status};
 });
 
