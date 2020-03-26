@@ -50,6 +50,10 @@ Model.prototype.toJSON = function () {
     unset(data, "created_at");
     unset(data, "updated_at");
     unset(data, "deleted_at");
+    data.image && this.image &&
+    data.image !== this.image && (
+        data.image = this.image
+    );
     (Array.isArray(this.exclude)) && this.exclude.map(
         key => key && unset(data, key)
     );
