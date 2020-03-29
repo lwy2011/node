@@ -3,6 +3,7 @@ import InitManager from "./core/init";
 import parser from "koa-bodyparser";
 import catch_error from "./middlewares/catch-error";
 import path from "path";
+import accessControl from "./middlewares/access-control-allow-origin";
 
 const staticPath = require("koa-static");
 
@@ -14,7 +15,7 @@ const staticPath = require("koa-static");
 
 const app = new Koa();
 
-
+app.use(accessControl);
 app.use(catch_error);
 
 app.use(parser());   //构建请求的body的数据，以便于在请求的body处拿到
