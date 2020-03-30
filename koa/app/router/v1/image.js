@@ -3,7 +3,9 @@ import Router from "koa-router";
 const router = new Router();
 
 router.post("/image/upload", async ctx => {
-    console.log(ctx.req);
-    ctx.body = {status: 200};
+    const data = ctx.request.files
+    console.log(data);
+
+    ctx.body = {status: 200,data};
 });
 export default router;

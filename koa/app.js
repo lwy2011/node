@@ -4,6 +4,7 @@ import parser from "koa-bodyparser";
 import catch_error from "./middlewares/catch-error";
 import path from "path";
 import accessControl from "./middlewares/access-control-allow-origin";
+import koaBody from 'koa-body'
 
 const staticPath = require("koa-static");
 
@@ -17,8 +18,8 @@ const app = new Koa();
 
 app.use(accessControl);
 app.use(catch_error);
-
 app.use(parser());   //构建请求的body的数据，以便于在请求的body处拿到
+app.use(koaBody({multipart:true}))
 
 
 //静态文件处理中间键：static是关键字，所以改变量名为staticPath了。
