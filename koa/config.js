@@ -20,7 +20,7 @@ const config = {
         detail: "http://t.yushu.im/v2/book/id/%s",
         search: "http://t.yushu.im/v2/book/search?q=%s&count=%s&start=%s&summary=%s"
     },
-    host: 'localhost:3000/'
+    host: 'http://localhost:3000/'
 };
 
 export default config;
