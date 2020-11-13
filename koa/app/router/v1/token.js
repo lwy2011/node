@@ -25,6 +25,7 @@ const emailLogin = async (account, password) =>
 router.post("/user", async (ctx) => {  //为了账号安全，POST而不是get
     const v = await new TokenValidator().validate(ctx);
     let token;
+    console.log(v,555);
     switch (v.get("body.type")) {
         case LoginType.user_email:
             const user =
